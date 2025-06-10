@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Menu, X, ChevronDown, Phone, Home, Briefcase, Wrench, Info, Mail, Settings, ClipboardList, Handshake, Wallet, LandPlot, Sparkles, Crown } from 'lucide-react';
+import { Menu, X, ChevronDown, Phone, Home, Briefcase, Wrench, Info, Mail, Settings, ClipboardList, Handshake, Wallet, LandPlot } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import CustomButton from '../ui/CustomButton';
 import { useAuth } from '@/contexts/AuthContext';
-import { ThemeToggle } from '@/contexts/ThemeContext';
+import { ThemeToggle } from '@/components/ui/ThemeToggle';
 
 const menuItems = [
   { name: 'Home', path: '/', icon: Home },
@@ -68,6 +68,7 @@ const Navbar = () => {
     document.body.style.overflow = 'auto';
   };
 
+  // No more dropdown toggles for mobile, as we are prioritizing scrollable content
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
   };
@@ -77,367 +78,330 @@ const Navbar = () => {
   };
 
   return (
-    <header className={`fixed w-full z-[9999] transition-all duration-500 ease-out ${isScrolled ? 'bg-white/80 dark:bg-royal-900/80 backdrop-blur-xl shadow-2xl shadow-black/10 py-3 sm:py-4' : 'bg-transparent py-4 sm:py-6'}`}>
-      {/* Animated Background Particles */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-1/4 left-1/4 w-2 h-2 bg-gold-400/30 rounded-full animate-pulse"></div>
-        <div className="absolute top-1/3 right-1/3 w-1 h-1 bg-royal-400/40 rounded-full animate-bounce" style={{ animationDelay: '1s' }}></div>
-        <div className="absolute bottom-1/4 left-1/3 w-1.5 h-1.5 bg-gold-300/20 rounded-full animate-ping" style={{ animationDelay: '2s' }}></div>
-      </div>
-
-      <div className="container mx-auto px-4 flex justify-between items-center relative">
-        {/* Logo with enhanced styling */}
-        <a href="/" target="_blank" rel="noopener noreferrer" className="flex items-center group transition-all duration-300 hover:scale-105">
-          <div className="relative">
-            <img 
-              src={isScrolled ? "https://iili.io/2mPx3rP.png" : "https://iili.io/2mPxFWb.png"} 
-              alt="Royal Group of Real Estates Logo" 
-              className="h-8 sm:h-10 md:h-12 transition-all duration-300 group-hover:drop-shadow-lg"
-            />
-            {/* Animated crown effect */}
-            <div className="absolute -top-1 -right-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-              <Crown size={16} className="text-gold-500 animate-pulse" />
-            </div>
-          </div>
-        </a>
+    <header className={`fixed w-full z-[9999] transition-all duration-300 backdrop-blur-sm ${isScrolled ? 'bg-white/90 dark:bg-royal-900/90 shadow-lg py-4' : 'bg-transparent py-6'}`}>
+      <div className="container mx-auto px-4 flex justify-between items-center">
+        <Link to="/" className="flex items-center transition-transform hover:scale-105">
+          <img 
+            src={isScrolled ? "https://iili.io/2mPx3rP.png" : "https://iili.io/2mPxFWb.png"} 
+            alt="Royal Group of Real Estates Logo" 
+            className="h-10 md:h-12"
+          />
+        </Link>
         
-        {/* Desktop Navigation */}
-        <nav className={`hidden lg:flex items-center space-x-1 ${isScrolled ? 'text-royal-800 dark:text-white' : 'text-white'}`}>
-          {menuItems.map((item) => {
-            const Icon = item.icon;
-            return (
-              <a 
-                key={item.name}
-                href={item.path} 
-                target="_blank"
-                rel="noopener noreferrer"
-                className="relative group px-4 py-2 rounded-xl font-medium transition-all duration-300 hover:-translate-y-0.5 hover:text-gold-500"
-              >
-                <span className="relative z-10 flex items-center space-x-2">
-                  <Icon size={16} className="opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                  <span>{item.name}</span>
-                </span>
-                {/* Hover background effect */}
-                <div className="absolute inset-0 bg-gradient-to-r from-gold-500/10 to-royal-500/10 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 backdrop-blur-sm"></div>
-                {/* Bottom border animation */}
-                <div className="absolute bottom-0 left-1/2 w-0 h-0.5 bg-gradient-to-r from-gold-400 to-gold-600 group-hover:w-full group-hover:left-0 transition-all duration-300"></div>
-              </a>
-            );
-          })}
-
-          {/* Services Dropdown */}
+        <nav className={`hidden lg:flex space-x-8 ${isScrolled ? 'text-royal-800 dark:text-white' : 'text-white'}`}>
+          <Link 
+            to="/" 
+            className="relative font-medium hover:text-gold-500 transition-all duration-300 hover:-translate-y-0.5"
+          >
+            Home
+          </Link>
+          <Link 
+            to="/properties" 
+            className="relative font-medium hover:text-gold-500 transition-all duration-300 hover:-translate-y-0.5"
+          >
+            Properties
+          </Link>
           <div className="relative group">
             <button 
               onClick={toggleDropdown}
-              className="flex items-center px-4 py-2 rounded-xl font-medium transition-all duration-300 hover:-translate-y-0.5 hover:text-gold-500 group-hover:bg-white/10 backdrop-blur-sm"
+              className="flex items-center font-medium group-hover:text-gold-500 transition-all duration-300 hover:-translate-y-0.5"
             >
-              <span className="flex items-center space-x-2">
-                <Briefcase size={16} className="opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                <span>Services</span>
-              </span>
+              Services
               <ChevronDown size={16} className="ml-1 transition-transform duration-300 group-hover:rotate-180" />
             </button>
-            {isDropdownOpen && !isMobileMenuOpen && (
-              <div className="absolute top-full left-0 mt-2 w-56 bg-white/95 dark:bg-royal-900/95 backdrop-blur-xl rounded-2xl shadow-2xl border border-white/20 dark:border-royal-700/50 py-3 z-[1000] animate-in fade-in-0 zoom-in-95 duration-300">
-                {serviceItems.map((item, index) => (
-                  <a 
-                    key={item.name}
-                    href={item.path} 
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="block px-4 py-3 mx-2 rounded-xl text-royal-800 dark:text-white hover:bg-gradient-to-r hover:from-gold-50 hover:to-royal-50 dark:hover:from-royal-800/50 dark:hover:to-royal-700/50 hover:text-gold-600 dark:hover:text-gold-400 transition-all duration-300 hover:translate-x-1"
-                    style={{ animationDelay: `${index * 50}ms` }}
-                  >
-                    <div className="flex items-center space-x-3">
-                      <div className="w-2 h-2 bg-gradient-to-r from-gold-400 to-gold-600 rounded-full"></div>
-                      <span className="font-medium">{item.name}</span>
-                    </div>
-                  </a>
-                ))}
+            {isDropdownOpen && !isMobileMenuOpen && ( // Hide desktop dropdown when mobile menu is open
+              <div className="absolute top-full left-0 mt-2 w-48 bg-white/95 dark:bg-royal-900/95 backdrop-blur-sm rounded-lg shadow-xl py-2 z-[1000] animate-in fade-in-0 zoom-in-95 duration-200">
+                <Link 
+                  to="/services/buying" 
+                  className="block px-4 py-2 text-royal-800 dark:text-white hover:bg-gold-50 dark:hover:bg-royal-800/50 hover:text-gold-500 transition-colors duration-300"
+                >
+                  Buying Property
+                </Link>
+                <Link 
+                  to="/services/selling" 
+                  className="block px-4 py-2 text-royal-800 dark:text-white hover:bg-gold-50 dark:hover:bg-royal-800/50 hover:text-gold-500 transition-colors duration-300"
+                >
+                  Selling Property
+                </Link>
+                <Link 
+                  to="/services/renting" 
+                  className="block px-4 py-2 text-royal-800 dark:text-white hover:bg-gold-50 dark:hover:bg-royal-800/50 hover:text-gold-500 transition-colors duration-300"
+                >
+                  Renting Property
+                </Link>
+                <Link 
+                  to="/services/investment" 
+                  className="block px-4 py-2 text-royal-800 dark:text-white hover:bg-gold-50 dark:hover:bg-royal-800/50 hover:text-gold-500 transition-colors duration-300"
+                >
+                  Investment Advisory
+                </Link>
               </div>
             )}
           </div>
-
-          {/* Tools Dropdown */}
           <div className="relative group">
             <button 
               onClick={toggleToolsDropdown}
-              className="flex items-center px-4 py-2 rounded-xl font-medium transition-all duration-300 hover:-translate-y-0.5 hover:text-gold-500 group-hover:bg-white/10 backdrop-blur-sm"
+              className="flex items-center font-medium group-hover:text-gold-500 transition-all duration-300 hover:-translate-y-0.5"
             >
-              <span className="flex items-center space-x-2">
-                <Wrench size={16} className="opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                <span>Tools</span>
-              </span>
+              Tools
               <ChevronDown size={16} className="ml-1 transition-transform duration-300 group-hover:rotate-180" />
             </button>
-            {isToolsDropdownOpen && !isMobileMenuOpen && (
-              <div className="absolute top-full left-0 mt-2 w-56 bg-white/95 dark:bg-royal-900/95 backdrop-blur-xl rounded-2xl shadow-2xl border border-white/20 dark:border-royal-700/50 py-3 z-[1000] animate-in fade-in-0 zoom-in-95 duration-300">
-                {toolItems.map((item, index) => (
-                  <a 
-                    key={item.name}
-                    href={item.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="block px-4 py-3 mx-2 rounded-xl text-royal-800 dark:text-white hover:bg-gradient-to-r hover:from-purple-50 hover:to-blue-50 dark:hover:from-purple-900/20 dark:hover:to-blue-900/20 hover:text-purple-600 dark:hover:text-purple-400 transition-all duration-300 hover:translate-x-1"
-                    style={{ animationDelay: `${index * 50}ms` }}
-                  >
-                    <div className="flex items-center space-x-3">
-                      <div className="w-2 h-2 bg-gradient-to-r from-purple-400 to-blue-600 rounded-full"></div>
-                      <span className="font-medium">{item.name}</span>
-                    </div>
-                  </a>
-                ))}
+            {isToolsDropdownOpen && !isMobileMenuOpen && ( // Hide desktop dropdown when mobile menu is open
+              <div className="absolute top-full left-0 mt-2 w-48 bg-white/95 dark:bg-royal-900/95 backdrop-blur-sm rounded-lg shadow-xl py-2 z-[1000] animate-in fade-in-0 zoom-in-95 duration-200">
+                <a 
+                  href="https://www.99acres.com/property-rates-and-price-trends-prffid"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block px-4 py-2 text-royal-800 dark:text-white hover:bg-gold-50 dark:hover:bg-royal-800/50 hover:text-gold-500 transition-colors duration-300"
+                >
+                  Property Rates & Trends
+                </a>
+                <a 
+                  href="https://www.99acres.com/real-estate-insights-irffid?referrer_section=SIDE_MENU"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block px-4 py-2 text-royal-800 dark:text-white hover:bg-gold-50 dark:hover:bg-royal-800/50 hover:text-gold-500 transition-colors duration-300"
+                >
+                  Property News
+                </a>
               </div>
             )}
           </div>
+          <Link 
+            to="/about" 
+            className="relative font-medium hover:text-gold-500 transition-all duration-300 hover:-translate-y-0.5"
+          >
+            About Us
+          </Link>
+          <Link 
+            to="/contact" 
+            className="relative font-medium hover:text-gold-500 transition-all duration-300 hover:-translate-y-0.5"
+          >
+            Contact
+          </Link>
           
           {isAuthenticated && isAdmin && (
-            <a 
-              href="/admin" 
-              target="_blank"
-              rel="noopener noreferrer"
-              className="relative group px-4 py-2 rounded-xl font-medium transition-all duration-300 hover:-translate-y-0.5 hover:text-red-500"
+            <Link 
+              to="/admin" 
+              className="relative font-medium hover:text-gold-500 transition-all duration-300 hover:-translate-y-0.5"
             >
-              <span className="relative z-10 flex items-center space-x-2">
-                <Settings size={16} className="opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                <span>Admin</span>
-              </span>
-              <div className="absolute inset-0 bg-gradient-to-r from-red-500/10 to-red-600/10 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 backdrop-blur-sm"></div>
-            </a>
+              Admin
+            </Link>
           )}
         </nav>
         
-        {/* Right side actions */}
-        <div className="flex items-center space-x-3 sm:space-x-4">
-          {/* Contact button with enhanced styling */}
+        <div className="flex items-center space-x-4">
           <a 
             href="tel:7006064587" 
             className={cn(
-              "hidden md:flex items-center font-medium transition-all duration-300 hover:-translate-y-0.5 group px-3 py-2 rounded-xl",
-              isScrolled 
-                ? "text-royal-800 dark:text-white hover:text-gold-500 hover:bg-gold-50 dark:hover:bg-gold-900/20" 
-                : "text-white hover:text-gold-300 hover:bg-white/10 backdrop-blur-sm"
+              "hidden md:flex items-center font-medium transition-all duration-300 hover:-translate-y-0.5",
+              isScrolled ? "text-royal-800 dark:text-white hover:text-gold-500" : "text-white hover:text-gold-300"
             )}
           >
-            <Phone size={18} className="mr-2 group-hover:animate-pulse" />
-            <span>Contact Us</span>
+            <Phone size={18} className="mr-2" />
+            Contact Us
           </a>
           
-          {/* Theme toggle with enhanced styling */}
-          <ThemeToggle 
-            className="ml-4" 
-            size="sm" 
-            showLabel={false}
-          />
+          <ThemeToggle iconOnly className="hidden md:block transition-transform hover:scale-110" />
           
-          {/* Sign in button with gradient */}
-          <a href="/auth" target="_blank" rel="noopener noreferrer">
+          <Link to="/auth">
             <CustomButton 
               variant={isScrolled ? "primary" : "outline"} 
               size="sm"
-              className={cn(
-                "text-xs sm:text-sm px-4 py-2 rounded-xl font-semibold transition-all duration-300 hover:scale-105 hover:shadow-lg",
-                !isScrolled 
-                  ? "border-white text-white hover:bg-white hover:text-royal-800 hover:shadow-white/20" 
-                  : "bg-gradient-to-r from-gold-400 to-gold-600 hover:from-gold-500 hover:to-gold-700 shadow-lg shadow-gold-500/25"
-              )}
+              className={!isScrolled ? "border-white text-white hover:bg-white hover:text-royal-800 transition-transform hover:scale-105" : "transition-transform hover:scale-105"}
             >
-              <span className="flex items-center space-x-2">
-                <Sparkles size={14} className="animate-pulse" />
-                <span>{isAuthenticated ? 'Dashboard' : 'Sign In'}</span>
-              </span>
+              {isAuthenticated ? 'Dashboard' : 'Sign In'}
             </CustomButton>
-          </a>
+          </Link>
           
-          {/* Optimized hamburger menu button */}
+          {/* HAMBURGER MENU BUTTON */}
           <button 
-            className="lg:hidden flex items-center justify-center w-9 h-9 rounded-lg bg-white/90 dark:bg-royal-800/90 backdrop-blur-sm shadow-md text-gray-700 dark:text-white transition-all duration-200 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-gold-300 group"
+            className="lg:hidden flex items-center justify-center w-11 h-11 rounded-xl bg-white/90 dark:bg-royal-800/90 backdrop-blur-sm shadow-lg text-gray-700 dark:text-white transition-all duration-300 hover:scale-105 hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-gold-300"
             onClick={toggleMobileMenu}
             aria-label="Toggle menu"
             aria-expanded={isMobileMenuOpen}
           >
-            <div className="relative w-5 h-5">
+            <div className="relative w-6 h-6">
               {/* Top line */}
               <span className={cn(
-                "absolute left-0 w-5 h-0.5 bg-current transition-all duration-200 ease-in-out group-hover:bg-gold-500",
-                isMobileMenuOpen ? "rotate-45 top-2" : "top-0"
+                "absolute left-0 w-6 h-0.5 bg-current transition-all duration-300 ease-in-out",
+                isMobileMenuOpen ? "rotate-45 top-3" : "top-1"
               )} />
               {/* Middle line */}
               <span className={cn(
-                "absolute left-0 w-5 h-0.5 bg-current transition-all duration-200 ease-in-out top-2 group-hover:bg-gold-500",
-                isMobileMenuOpen ? "opacity-0" : "opacity-100"
+                "absolute left-0 w-6 h-0.5 bg-current transition-all duration-300 ease-in-out top-3",
+                isMobileMenuOpen ? "opacity-0 scale-0" : "opacity-100 scale-100"
               )} />
               {/* Bottom line */}
               <span className={cn(
-                "absolute left-0 w-5 h-0.5 bg-current transition-all duration-200 ease-in-out group-hover:bg-gold-500",
-                isMobileMenuOpen ? "-rotate-45 top-2" : "top-4"
+                "absolute left-0 w-6 h-0.5 bg-current transition-all duration-300 ease-in-out",
+                isMobileMenuOpen ? "-rotate-45 top-3" : "top-5"
               )} />
             </div>
           </button>
         </div>
       </div>
       
-      {/* Optimized Mobile Menu Overlay */}
+      {/* MOBILE MENU OVERLAY */}
       <div className={cn(
-        "lg:hidden fixed inset-0 z-[9999] transition-all duration-300 ease-in-out",
+        "lg:hidden fixed inset-0 z-[9999] transition-all duration-500 ease-in-out",
         isMobileMenuOpen 
           ? "opacity-100 pointer-events-auto" 
           : "opacity-0 pointer-events-none"
       )}>
-        {/* Simplified backdrop */}
+        {/* Backdrop */}
         <div 
-          className="absolute inset-0 bg-black/70 backdrop-blur-sm transition-opacity duration-300"
+          className="absolute inset-0 bg-gradient-to-br from-royal-900/80 via-black/60 to-gold-900/40 backdrop-blur-xl transition-opacity duration-500"
           onClick={closeMobileMenu}
         />
         
-        {/* Optimized Menu Container */}
+        {/* Menu Container */}
         <div className={cn(
-          "fixed inset-0 flex items-center justify-center transition-all duration-300 ease-in-out p-4",
-          isMobileMenuOpen ? "scale-100 opacity-100" : "scale-95 opacity-0"
+          "mobile-menu-container fixed inset-0 flex items-center justify-center transition-all duration-500 ease-in-out",
+          isMobileMenuOpen ? "scale-100 opacity-100" : "scale-75 opacity-0"
         )}>
-          {/* Simplified Mobile Menu */}
-          <div className="w-full max-w-sm bg-white dark:bg-royal-900 rounded-2xl shadow-xl border border-gray-200 dark:border-royal-700 overflow-hidden">
-            {/* Simplified Header */}
-            <div className="p-4 border-b border-gray-200 dark:border-royal-700 bg-gray-50 dark:bg-royal-800">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center space-x-3">
-                  <div className="w-10 h-10 rounded-full bg-gradient-to-br from-gold-400 to-gold-600 flex items-center justify-center text-white font-bold text-sm">
-                    {user ? user.name?.charAt(0).toUpperCase() : 'G'}
-                  </div>
-                  <div>
-                    <p className="text-gray-800 dark:text-white font-semibold text-sm">
-                      {user ? user.name : 'Guest'}
-                    </p>
-                    <p className="text-gray-500 dark:text-gray-300 text-xs">
-                      {isAuthenticated ? 'Welcome back!' : 'Sign in to continue'}
-                    </p>
-                  </div>
+          {/* Central Hub */}
+          <div className="relative w-80 h-80">
+            {/* User Profile Center */}
+            <div className="absolute inset-0 flex items-center justify-center">
+              <div className="relative group cursor-pointer" onClick={closeMobileMenu}>
+                <div className="w-24 h-24 rounded-full bg-gradient-to-br from-gold-400 via-royal-500 to-gold-600 flex items-center justify-center text-white font-bold text-2xl shadow-2xl transition-all duration-300 hover:scale-110 hover:shadow-gold-500/25">
+                  {user ? user.name?.charAt(0).toUpperCase() : 'G'}
                 </div>
-                <button
-                  onClick={closeMobileMenu}
-                  className="p-2 rounded-lg bg-gray-200 dark:bg-royal-700 text-gray-600 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-royal-600 transition-colors duration-200"
-                >
-                  <X size={18} />
-                </button>
+                <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 bg-white dark:bg-royal-800 px-3 py-1 rounded-full shadow-lg text-xs font-medium text-gray-700 dark:text-white whitespace-nowrap">
+                  {user ? user.name : 'Guest'}
+                </div>
               </div>
             </div>
 
-            {/* Simplified Menu Items */}
-            <div className="p-4 space-y-2">
-              {/* Main Navigation */}
-              <div className="space-y-1">
-                <h3 className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider px-3 py-2">
-                  Navigation
-                </h3>
-                {menuItems.map((item) => {
-                  const Icon = item.icon;
-                  return (
-                    <a
-                      key={item.name}
-                      href={item.path}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center space-x-3 px-3 py-2 rounded-lg text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-royal-800 transition-colors duration-200"
-                      onClick={closeMobileMenu}
-                    >
-                      <div className="p-1.5 bg-gold-500 rounded-lg">
-                        <Icon size={16} className="text-white" />
-                      </div>
-                      <span className="font-medium text-sm">{item.name}</span>
-                    </a>
-                  );
-                })}
-              </div>
-
-              {/* Services */}
-              <div className="space-y-1 pt-2">
-                <h3 className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider px-3 py-2">
-                  Services
-                </h3>
-                {serviceItems.map((item) => (
-                  <a
-                    key={item.name}
-                    href={item.path}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center space-x-3 px-3 py-2 rounded-lg text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-royal-800 transition-colors duration-200"
+            {/* Orbital Menu Items */}
+            {menuItems.map((item, index) => {
+              const Icon = item.icon;
+              const angle = (index * 360) / menuItems.length;
+              const radius = 120;
+              const x = Math.cos((angle - 90) * Math.PI / 180) * radius;
+              const y = Math.sin((angle - 90) * Math.PI / 180) * radius;
+              
+              return (
+                <div
+                  key={item.name}
+                  className="absolute w-16 h-16 transition-all duration-700 ease-out"
+                  style={{
+                    left: `calc(50% + ${x}px - 32px)`,
+                    top: `calc(50% + ${y}px - 32px)`,
+                    transform: isMobileMenuOpen ? 'scale(1)' : 'scale(0)',
+                    transitionDelay: `${index * 100}ms`
+                  }}
+                >
+                  <Link
+                    to={item.path}
+                    className="w-full h-full rounded-full bg-white/90 dark:bg-royal-800/90 backdrop-blur-sm border border-white/20 dark:border-royal-600/20 flex items-center justify-center shadow-xl hover:shadow-2xl hover:scale-110 transition-all duration-300 group"
                     onClick={closeMobileMenu}
                   >
-                    <div className="p-1.5 bg-blue-500 rounded-lg">
-                      <Briefcase size={16} className="text-white" />
-                    </div>
-                    <span className="font-medium text-sm">{item.name}</span>
-                  </a>
-                ))}
-              </div>
+                    <Icon size={24} className="text-royal-600 dark:text-gold-400 group-hover:text-gold-500 dark:group-hover:text-gold-300 transition-colors duration-300" />
+                  </Link>
+                </div>
+              );
+            })}
 
-              {/* Tools */}
-              <div className="space-y-1 pt-2">
-                <h3 className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider px-3 py-2">
-                  Tools
-                </h3>
-                {toolItems.map((item) => (
+            {/* Outer Ring - Services */}
+            {serviceItems.map((item, index) => {
+              const angle = (index * 360) / serviceItems.length;
+              const radius = 180;
+              const x = Math.cos((angle - 90) * Math.PI / 180) * radius;
+              const y = Math.sin((angle - 90) * Math.PI / 180) * radius;
+              
+              return (
+                <div
+                  key={item.name}
+                  className="absolute w-20 h-20 transition-all duration-700 ease-out"
+                  style={{
+                    left: `calc(50% + ${x}px - 40px)`,
+                    top: `calc(50% + ${y}px - 40px)`,
+                    transform: isMobileMenuOpen ? 'scale(1)' : 'scale(0)',
+                    transitionDelay: `${(index + menuItems.length) * 100}ms`
+                  }}
+                >
+                  <Link
+                    to={item.path}
+                    className="w-full h-full rounded-2xl bg-gradient-to-br from-gold-400/80 to-royal-500/80 backdrop-blur-sm border border-gold-300/30 dark:border-royal-400/30 flex items-center justify-center shadow-xl hover:shadow-2xl hover:scale-110 transition-all duration-300 group"
+                    onClick={closeMobileMenu}
+                  >
+                    <span className="text-xs font-bold text-white text-center px-1 leading-tight">{item.name}</span>
+                  </Link>
+                </div>
+              );
+            })}
+
+            {/* Tools Ring - External Links */}
+            {toolItems.map((item, index) => {
+              const angle = (index * 360) / toolItems.length;
+              const radius = 240;
+              const x = Math.cos((angle - 90) * Math.PI / 180) * radius;
+              const y = Math.sin((angle - 90) * Math.PI / 180) * radius;
+              
+              return (
+                <div
+                  key={item.name}
+                  className="absolute w-16 h-16 transition-all duration-700 ease-out"
+                  style={{
+                    left: `calc(50% + ${x}px - 32px)`,
+                    top: `calc(50% + ${y}px - 32px)`,
+                    transform: isMobileMenuOpen ? 'scale(1)' : 'scale(0)',
+                    transitionDelay: `${(index + menuItems.length + serviceItems.length) * 100}ms`
+                  }}
+                >
                   <a
-                    key={item.name}
                     href={item.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center space-x-3 px-3 py-2 rounded-lg text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-royal-800 transition-colors duration-200"
+                    className="w-full h-full rounded-full bg-gradient-to-br from-royal-500/80 to-royal-600/80 backdrop-blur-sm border border-royal-400/30 flex items-center justify-center shadow-xl hover:shadow-2xl hover:scale-110 transition-all duration-300 group"
                     onClick={closeMobileMenu}
                   >
-                    <div className="p-1.5 bg-purple-500 rounded-lg">
-                      <Wrench size={16} className="text-white" />
-                    </div>
-                    <span className="font-medium text-sm">{item.name}</span>
-                  </a>
-                ))}
-              </div>
-
-              {/* Admin Panel */}
-              {isAuthenticated && isAdmin && (
-                <div className="space-y-1 pt-2">
-                  <h3 className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider px-3 py-2">
-                    Admin
-                  </h3>
-                  <a
-                    href="/admin"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center space-x-3 px-3 py-2 rounded-lg text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors duration-200"
-                    onClick={closeMobileMenu}
-                  >
-                    <div className="p-1.5 bg-red-500 rounded-lg">
-                      <Settings size={16} className="text-white" />
-                    </div>
-                    <span className="font-medium text-sm">Admin Panel</span>
+                    <span className="text-xs font-bold text-white text-center px-1 leading-tight">{item.name.split(' ')[0]}</span>
                   </a>
                 </div>
-              )}
-            </div>
+              );
+            })}
 
-            {/* Simplified Footer Actions */}
-            <div className="p-4 border-t border-gray-200 dark:border-royal-700 space-y-2 bg-gray-50 dark:bg-royal-800">
-              <a href="/auth" target="_blank" rel="noopener noreferrer" onClick={closeMobileMenu}>
-                <CustomButton 
-                  variant="primary" 
-                  className="w-full bg-gold-500 hover:bg-gold-600 text-white font-semibold py-2.5 rounded-lg transition-colors duration-200"
-                >
-                  <span className="flex items-center justify-center space-x-2">
-                    <Sparkles size={14} />
-                    <span className="text-sm">{isAuthenticated ? 'Go to Dashboard' : 'Sign In / Register'}</span>
-                  </span>
-                </CustomButton>
-              </a>
-              
-              <a 
-                href="tel:7006064587" 
-                className="flex items-center justify-center space-x-2 w-full bg-royal-500 hover:bg-royal-600 text-white font-semibold py-2.5 px-4 rounded-lg transition-colors duration-200"
+            {/* Floating Action Buttons */}
+            <div className="absolute -bottom-20 left-1/2 transform -translate-x-1/2 flex space-x-4">
+              <CustomButton 
+                variant="primary" 
+                className="w-32 h-12 rounded-full bg-gradient-to-r from-gold-400 to-gold-600 text-white font-bold shadow-xl hover:shadow-2xl hover:scale-105 transition-all duration-300"
                 onClick={closeMobileMenu}
               >
-                <Phone size={16} />
-                <span className="text-sm">Call Now</span>
+                {isAuthenticated ? 'Dashboard' : 'Sign In'}
+              </CustomButton>
+              <a 
+                href="tel:7006064587" 
+                className="w-32 h-12 rounded-full bg-gradient-to-r from-royal-500 to-royal-700 text-white font-bold shadow-xl hover:shadow-2xl hover:scale-105 transition-all duration-300 flex items-center justify-center"
+                onClick={closeMobileMenu}
+              >
+                <Phone size={18} />
               </a>
             </div>
+
+            {/* Admin Panel - Special Position */}
+            {isAuthenticated && isAdmin && (
+              <div
+                className="absolute w-16 h-16 transition-all duration-700 ease-out"
+                style={{
+                  left: 'calc(50% + 0px - 32px)',
+                  top: 'calc(50% + 140px - 32px)',
+                  transform: isMobileMenuOpen ? 'scale(1)' : 'scale(0)',
+                  transitionDelay: '800ms'
+                }}
+              >
+                <Link
+                  to="/admin"
+                  className="w-full h-full rounded-full bg-gradient-to-br from-red-500/80 to-red-600/80 backdrop-blur-sm border border-red-300/30 flex items-center justify-center shadow-xl hover:shadow-2xl hover:scale-110 transition-all duration-300 group"
+                  onClick={closeMobileMenu}
+                >
+                  <Settings size={24} className="text-white group-hover:text-red-100 transition-colors duration-300" />
+                </Link>
+              </div>
+            )}
           </div>
         </div>
       </div>
