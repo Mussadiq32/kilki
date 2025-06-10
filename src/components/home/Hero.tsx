@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { 
   Search, 
@@ -14,12 +14,18 @@ import {
   TrendingUp,
   Shield,
   Award,
-  Zap
+  Zap,
+  Sparkles,
+  ArrowRight,
+  Play,
+  CheckCircle,
+  X
 } from 'lucide-react';
 import CustomButton from '../ui/CustomButton';
 import PropertySearch from '../ui/PropertySearch';
+import VideoModal from '../ui/VideoModal';
 import { cn } from '@/lib/utils';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 
 const Hero = () => {
   const navigate = useNavigate();
@@ -29,6 +35,12 @@ const Hero = () => {
   const [selectedLocation, setSelectedLocation] = useState('');
   const [selectedType, setSelectedType] = useState('');
   const [selectedBudget, setSelectedBudget] = useState('');
+  const [isVisible, setIsVisible] = useState(false);
+  const [showVideoModal, setShowVideoModal] = useState(false);
+
+  useEffect(() => {
+    setIsVisible(true);
+  }, []);
 
   const toggleDropdown = (name: string) => {
     setActiveDropdown(activeDropdown === name ? null : name);
@@ -91,46 +103,55 @@ const Hero = () => {
     toggleDropdown('budget');
   };
 
-  // Helper to split text into words and animate each word
-  const AnimatedHeading = () => {
+  const handleWatchVideo = () => {
+    setShowVideoModal(true);
+  };
+
+  // Modern animated heading with gradient text
+  const ModernHeading = () => {
     const heading = "Find Your Dream Property in India's Finest Locations";
     const words = heading.split(' ');
+    
     return (
-      <motion.h1
-        className="font-display text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl text-white dark:text-white font-semibold leading-tight mb-4 sm:mb-6 flex flex-wrap gap-x-1 sm:gap-x-2"
-        initial="hidden"
-        animate="visible"
-        variants={{
-          hidden: {},
-          visible: {
-            transition: {
-              staggerChildren: 0.12,
-            },
-          },
-        }}
+      <motion.div
+        initial={{ opacity: 0, y: 50 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, delay: 0.2 }}
+        className="mb-6"
       >
+        <h1 className="font-display text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold leading-tight mb-6">
         {words.map((word, i) => (
           <motion.span
             key={i}
-            className={word === 'Property' ? 'text-gold-400' : ''}
-            variants={{
-              hidden: { opacity: 0, y: 30 },
-              visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: 'easeOut' } },
-            }}
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ 
+                duration: 0.6, 
+                delay: 0.3 + (i * 0.1),
+                ease: "easeOut"
+              }}
+              className={cn(
+                "inline-block mr-2 sm:mr-3",
+                word === 'Property' ? 'bg-gradient-to-r from-gold-400 via-gold-500 to-gold-600 bg-clip-text text-transparent' : 'text-white',
+                word === 'Dream' ? 'bg-gradient-to-r from-purple-400 via-purple-500 to-purple-600 bg-clip-text text-transparent' : '',
+                word === 'India' ? 'bg-gradient-to-r from-green-400 via-green-500 to-green-600 bg-clip-text text-transparent' : ''
+              )}
           >
             {word}
           </motion.span>
         ))}
-      </motion.h1>
+        </h1>
+      </motion.div>
     );
   };
 
   return (
-    <section className="relative min-h-screen flex flex-col justify-center pt-20 sm:pt-24">
-      {/* Background image with overlay */}
+    <>
+      <section className="relative min-h-screen flex flex-col justify-center overflow-hidden">
+        {/* Modern Background with Multiple Layers */}
       <div className="absolute inset-0 z-0">
-        <div className="absolute inset-0 bg-gradient-to-b from-black/50 to-black/20 z-10"></div>
-        <div className="absolute inset-0 bg-gradient-to-t from-background to-transparent z-10 dark:from-royal-900 dark:to-transparent"></div>
+          {/* Main Background Image */}
+          <div className="absolute inset-0">
         <img 
           src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb&w=3000" 
           alt="Luxury home" 
@@ -138,264 +159,396 @@ const Hero = () => {
         />
       </div>
 
-      <div className="container mx-auto relative z-10 px-4 sm:px-6 md:px-12 lg:px-24 py-8 sm:py-16 mt-4 sm:mt-8">
-        <div className="max-w-3xl animate-fade-up" style={{ animationDelay: '200ms' }}>
-          <AnimatedHeading />
-          <p className="text-white/90 dark:text-royal-100 text-base sm:text-lg md:text-xl mb-6 sm:mb-8 max-w-2xl">
-            Discover premium properties across major Indian cities with Royal Group of Real Estate, your trusted partner in real estate excellence.
-          </p>
+          {/* Gradient Overlays */}
+          <div className="absolute inset-0 bg-gradient-to-br from-black/60 via-black/40 to-black/20"></div>
+          <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-transparent to-transparent"></div>
+          
+          {/* Animated Gradient Mesh */}
+          <div className="absolute inset-0 bg-gradient-to-r from-purple-500/10 via-transparent to-gold-500/10 animate-pulse"></div>
+          
+          {/* Floating Particles Effect */}
+          <div className="absolute inset-0 overflow-hidden">
+            {[...Array(20)].map((_, i) => (
+              <motion.div
+                key={i}
+                className="absolute w-2 h-2 bg-gold-400/30 rounded-full"
+                animate={{
+                  x: [0, 100, 0],
+                  y: [0, -100, 0],
+                  opacity: [0.3, 0.8, 0.3],
+                }}
+                transition={{
+                  duration: 8 + Math.random() * 4,
+                  repeat: Infinity,
+                  delay: Math.random() * 2,
+                }}
+                style={{
+                  left: `${Math.random() * 100}%`,
+                  top: `${Math.random() * 100}%`,
+                }}
+              />
+            ))}
+          </div>
         </div>
 
-        {/* Enhanced Search Box */}
+        {/* Main Content */}
+        <div className="container mx-auto relative z-10 px-4 sm:px-6 md:px-12 lg:px-24 py-8 sm:py-16">
+          <div className="max-w-6xl mx-auto">
+            {/* Hero Content */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+              {/* Left Column - Text Content */}
+              <motion.div
+                initial={{ opacity: 0, x: -50 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.8, delay: 0.3 }}
+                className="space-y-8"
+              >
+                {/* Badge */}
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.6, delay: 0.4 }}
+                  className="inline-flex items-center px-4 py-2 bg-white/10 backdrop-blur-md border border-white/20 rounded-full text-white/90 text-sm font-medium"
+                >
+                  <Sparkles size={16} className="mr-2 text-gold-400" />
+                  Trusted by 10,000+ Homeowners
+                  <Sparkles size={16} className="ml-2 text-gold-400" />
+                </motion.div>
+
+                {/* Modern Heading */}
+                <ModernHeading />
+
+                {/* Subtitle */}
+                <motion.p
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: 0.6 }}
+                  className="text-white/80 text-lg sm:text-xl md:text-2xl leading-relaxed max-w-2xl"
+                >
+                  Discover premium properties across major Indian cities with Royal Group of Real Estate, 
+                  your trusted partner in real estate excellence.
+                </motion.p>
+
+                {/* Trust Indicators */}
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: 0.8 }}
+                  className="flex flex-wrap gap-4 items-center"
+                >
+                  {[
+                    { icon: <Shield size={20} />, text: "Verified Properties" },
+                    { icon: <Award size={20} />, text: "Best Deals" },
+                    { icon: <Star size={20} />, text: "Premium Quality" },
+                  ].map((item, index) => (
+                    <div key={index} className="flex items-center text-white/70 text-sm">
+                      <div className="mr-2 text-gold-400">{item.icon}</div>
+                      {item.text}
+                    </div>
+                  ))}
+                </motion.div>
+
+                {/* CTA Buttons */}
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: 1.0 }}
+                  className="flex flex-col sm:flex-row gap-4"
+                >
+                  <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    className="bg-gradient-to-r from-gold-500 to-gold-600 hover:from-gold-600 hover:to-gold-700 text-white px-8 py-4 rounded-xl font-semibold text-lg shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center group"
+                  >
+                    Start Your Search
+                    <ArrowRight size={20} className="ml-2 group-hover:translate-x-1 transition-transform" />
+                  </motion.button>
+                  
+                  <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    onClick={handleWatchVideo}
+                    className="bg-white/10 backdrop-blur-md border border-white/20 text-white px-8 py-4 rounded-xl font-semibold text-lg hover:bg-white/20 transition-all duration-300 flex items-center justify-center group"
+                  >
+                    <Play size={20} className="mr-2" />
+                    Watch Video
+                  </motion.button>
+                </motion.div>
+              </motion.div>
+
+              {/* Right Column - Search Form */}
+              <motion.div
+                initial={{ opacity: 0, x: 50 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.8, delay: 0.5 }}
+                className="relative"
+              >
+                {/* Floating Search Card */}
         <motion.div 
-          className="bg-white/95 dark:bg-royal-900/95 backdrop-blur-xl rounded-xl sm:rounded-2xl shadow-2xl p-4 sm:p-6 max-w-6xl animate-fade-up border border-white/20 dark:border-royal-700/50"
-          style={{ animationDelay: '400ms' }}
-          whileHover={{ scale: 1.02 }}
-          transition={{ duration: 0.3 }}
-        >
+                  initial={{ opacity: 0, y: 50, rotateY: -15 }}
+                  animate={{ opacity: 1, y: 0, rotateY: 0 }}
+                  transition={{ duration: 0.8, delay: 0.7 }}
+                  className="bg-white/95 backdrop-blur-xl rounded-3xl shadow-2xl p-8 border border-white/20 relative overflow-hidden"
+                >
+                  {/* Decorative Elements */}
+                  <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-gold-400/20 to-purple-400/20 rounded-full -translate-y-16 translate-x-16"></div>
+                  <div className="absolute bottom-0 left-0 w-24 h-24 bg-gradient-to-tr from-blue-400/20 to-green-400/20 rounded-full translate-y-12 -translate-x-12"></div>
+
           {/* Enhanced Tabs */}
-          <div className="flex flex-wrap mb-4 sm:mb-6 px-1 sm:px-2 gap-2 sm:gap-0">
+                  <div className="flex mb-6 p-1 bg-gray-100 rounded-2xl">
             {[
-              { key: 'buy', label: 'Buy', icon: <Home size={16} className="sm:w-[18px] sm:h-[18px]" />, color: 'from-green-500 to-emerald-600' },
-              { key: 'rent', label: 'Rent', icon: <Bed size={16} className="sm:w-[18px] sm:h-[18px]" />, color: 'from-blue-500 to-cyan-600' },
-              { key: 'sell', label: 'Sell', icon: <TrendingUp size={16} className="sm:w-[18px] sm:h-[18px]" />, color: 'from-purple-500 to-violet-600' }
+                      { key: 'buy', label: 'Buy', icon: <Home size={18} />, color: 'from-green-500 to-emerald-600' },
+                      { key: 'rent', label: 'Rent', icon: <Bed size={18} />, color: 'from-blue-500 to-cyan-600' },
+                      { key: 'sell', label: 'Sell', icon: <TrendingUp size={18} />, color: 'from-purple-500 to-violet-600' }
             ].map((tab) => (
               <button 
                 key={tab.key}
                 className={cn(
-                  "flex items-center px-3 sm:px-6 py-2 sm:py-3 rounded-lg sm:rounded-xl text-xs sm:text-sm font-semibold mr-0 sm:mr-3 transition-all duration-300 transform hover:scale-105 flex-1 sm:flex-none",
+                          "flex items-center px-6 py-3 rounded-xl text-sm font-semibold transition-all duration-300 flex-1",
                   activeTab === tab.key 
                     ? `bg-gradient-to-r ${tab.color} text-white shadow-lg` 
-                    : "bg-gray-100 dark:bg-royal-800 text-royal-700 dark:text-royal-100 hover:bg-gray-200 dark:hover:bg-royal-700"
+                            : "text-gray-600 hover:text-gray-800 hover:bg-white/50"
                 )}
                 onClick={() => setActiveTab(tab.key as 'buy' | 'rent' | 'sell')}
               >
-                <span className="mr-1 sm:mr-2">{tab.icon}</span>
+                        <span className="mr-2">{tab.icon}</span>
                 {tab.label}
               </button>
             ))}
           </div>
           
-          {/* Enhanced Search fields */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-4 sm:mb-6">
+                  {/* Enhanced Search Fields */}
+                  <div className="space-y-4 mb-6">
             {/* Location Field */}
             <div className="relative group">
               <div 
-                className="border-2 border-gray-200 dark:border-royal-700 rounded-lg sm:rounded-xl px-3 sm:px-4 py-3 sm:py-4 flex items-center cursor-pointer hover:border-gold-400 dark:hover:border-gold-500 transition-all duration-300 bg-white dark:bg-royal-800 group-hover:shadow-lg"
+                        className="border-2 border-gray-200 rounded-xl px-4 py-4 flex items-center cursor-pointer hover:border-gold-400 transition-all duration-300 bg-white group-hover:shadow-lg"
                 onClick={() => toggleDropdown('location')}
               >
-                <div className="p-1.5 sm:p-2 bg-gradient-to-r from-gold-400 to-gold-600 rounded-lg mr-2 sm:mr-3">
-                  <MapPin size={16} className="sm:w-5 sm:h-5 text-white" />
+                        <div className="p-2 bg-gradient-to-r from-gold-400 to-gold-600 rounded-lg mr-3">
+                          <MapPin size={18} className="text-white" />
                 </div>
-                <div className="flex-1 min-w-0">
-                  <div className="text-xs text-royal-500 dark:text-royal-300 font-medium">Location</div>
-                  <div className="text-royal-800 dark:text-royal-100 font-semibold text-sm sm:text-base truncate">
+                        <div className="flex-1">
+                          <div className="text-xs text-gray-500 font-medium">Location</div>
+                          <div className="text-gray-800 font-semibold">
                     {selectedLocation || "Select City"}
                   </div>
                 </div>
-                <ChevronDown size={16} className="sm:w-[18px] sm:h-[18px] text-royal-400 dark:text-royal-200 group-hover:text-gold-500 transition-colors flex-shrink-0" />
+                        <ChevronDown size={18} className="text-gray-400 group-hover:text-gold-500 transition-colors" />
               </div>
               
-              {/* Enhanced Location Dropdown */}
-              <div className={cn(
-                "absolute left-0 right-0 mt-2 bg-white dark:bg-royal-800 rounded-lg sm:rounded-xl shadow-2xl z-50 border border-gray-200 dark:border-royal-700 transition-all duration-300 transform origin-top backdrop-blur-xl",
-                activeDropdown === 'location' ? "opacity-100 scale-100" : "opacity-0 scale-95 pointer-events-none"
-              )}>
-                <div className="p-3">
-                  <div className="text-xs font-semibold text-royal-500 dark:text-royal-300 mb-2 px-2">Popular Cities</div>
+                      <AnimatePresence>
+                        {activeDropdown === 'location' && (
+                          <motion.div
+                            initial={{ opacity: 0, y: -10, scale: 0.95 }}
+                            animate={{ opacity: 1, y: 0, scale: 1 }}
+                            exit={{ opacity: 0, y: -10, scale: 0.95 }}
+                            className="absolute left-0 right-0 mt-2 bg-white rounded-xl shadow-2xl z-50 border border-gray-200"
+                          >
+                            <div className="p-4">
+                              <div className="text-xs font-semibold text-gray-500 mb-3">Popular Cities</div>
                   {['Srinagar', 'Jammu', 'Chandigarh', 'Delhi', 'Gurgaon', 'Bangalore', 'Hyderabad', 'Ahmedabad', 'Mumbai'].map((city) => (
                     <div 
                       key={city} 
-                      className="px-3 py-2 sm:py-3 hover:bg-gradient-to-r hover:from-gold-50 hover:to-gold-100 dark:hover:from-gold-900/20 dark:hover:to-gold-800/20 rounded-lg cursor-pointer transition-all duration-200 flex items-center text-royal-800 dark:text-royal-100 hover:scale-105"
+                                  className="px-3 py-3 hover:bg-gradient-to-r hover:from-gold-50 hover:to-gold-100 rounded-lg cursor-pointer transition-all duration-200 flex items-center text-gray-800 hover:scale-105"
                       onClick={() => handleSelectLocation(city)}
                     >
-                      <div className="p-1 sm:p-1.5 bg-gold-100 dark:bg-gold-900/30 rounded-md mr-2 sm:mr-3">
-                        <MapPin size={12} className="sm:w-[14px] sm:h-[14px] text-gold-600 dark:text-gold-400" />
+                                  <div className="p-1.5 bg-gold-100 rounded-md mr-3">
+                                    <MapPin size={14} className="text-gold-600" />
                       </div>
-                      <span className="font-medium text-sm sm:text-base">{city}</span>
+                                  <span className="font-medium">{city}</span>
                     </div>
                   ))}
                 </div>
-              </div>
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
             </div>
             
             {/* Property Type Field */}
             <div className="relative group">
               <div 
-                className="border-2 border-gray-200 dark:border-royal-700 rounded-lg sm:rounded-xl px-3 sm:px-4 py-3 sm:py-4 flex items-center cursor-pointer hover:border-gold-400 dark:hover:border-gold-500 transition-all duration-300 bg-white dark:bg-royal-800 group-hover:shadow-lg"
+                        className="border-2 border-gray-200 rounded-xl px-4 py-4 flex items-center cursor-pointer hover:border-gold-400 transition-all duration-300 bg-white group-hover:shadow-lg"
                 onClick={() => toggleDropdown('type')}
               >
-                <div className="p-1.5 sm:p-2 bg-gradient-to-r from-blue-400 to-blue-600 rounded-lg mr-2 sm:mr-3">
-                  <Building size={16} className="sm:w-5 sm:h-5 text-white" />
+                        <div className="p-2 bg-gradient-to-r from-blue-400 to-blue-600 rounded-lg mr-3">
+                          <Building size={18} className="text-white" />
                 </div>
-                <div className="flex-1 min-w-0">
-                  <div className="text-xs text-royal-500 dark:text-royal-300 font-medium">Property Type</div>
-                  <div className="text-royal-800 dark:text-royal-100 font-semibold text-sm sm:text-base truncate">
+                        <div className="flex-1">
+                          <div className="text-xs text-gray-500 font-medium">Property Type</div>
+                          <div className="text-gray-800 font-semibold">
                     {selectedType || "Select Type"}
                   </div>
                 </div>
-                <ChevronDown size={16} className="sm:w-[18px] sm:h-[18px] text-royal-400 dark:text-royal-200 group-hover:text-gold-500 transition-colors flex-shrink-0" />
+                        <ChevronDown size={18} className="text-gray-400 group-hover:text-gold-500 transition-colors" />
               </div>
               
-              {/* Enhanced Property Type Dropdown */}
-              <div className={cn(
-                "absolute left-0 right-0 mt-2 bg-white dark:bg-royal-800 rounded-lg sm:rounded-xl shadow-2xl z-50 border border-gray-200 dark:border-royal-700 transition-all duration-300 transform origin-top backdrop-blur-xl",
-                activeDropdown === 'type' ? "opacity-100 scale-100" : "opacity-0 scale-95 pointer-events-none"
-              )}>
-                <div className="p-3">
-                  <div className="text-xs font-semibold text-royal-500 dark:text-royal-300 mb-2 px-2">Property Types</div>
+                      <AnimatePresence>
+                        {activeDropdown === 'type' && (
+                          <motion.div
+                            initial={{ opacity: 0, y: -10, scale: 0.95 }}
+                            animate={{ opacity: 1, y: 0, scale: 1 }}
+                            exit={{ opacity: 0, y: -10, scale: 0.95 }}
+                            className="absolute left-0 right-0 mt-2 bg-white rounded-xl shadow-2xl z-50 border border-gray-200"
+                          >
+                            <div className="p-4">
+                              <div className="text-xs font-semibold text-gray-500 mb-3">Property Types</div>
                   {[
-                    { name: 'Residential', icon: <Home size={14} className="sm:w-4 sm:h-4" />, color: 'from-green-400 to-green-600' },
-                    { name: 'Commercial', icon: <Building size={14} className="sm:w-4 sm:h-4" />, color: 'from-blue-400 to-blue-600' },
-                    { name: 'Apartment', icon: <Building size={14} className="sm:w-4 sm:h-4" />, color: 'from-purple-400 to-purple-600' },
-                    { name: 'Villa', icon: <Home size={14} className="sm:w-4 sm:h-4" />, color: 'from-orange-400 to-orange-600' },
-                    { name: 'Land', icon: <Square size={14} className="sm:w-4 sm:h-4" />, color: 'from-emerald-400 to-emerald-600' },
+                                { name: 'Residential', icon: <Home size={16} />, color: 'from-green-400 to-green-600' },
+                                { name: 'Commercial', icon: <Building size={16} />, color: 'from-blue-400 to-blue-600' },
+                                { name: 'Apartment', icon: <Building size={16} />, color: 'from-purple-400 to-purple-600' },
+                                { name: 'Villa', icon: <Home size={16} />, color: 'from-orange-400 to-orange-600' },
+                                { name: 'Land', icon: <Square size={16} />, color: 'from-emerald-400 to-emerald-600' },
                   ].map((type) => (
                     <div 
                       key={type.name} 
-                      className="px-3 py-2 sm:py-3 hover:bg-gradient-to-r hover:from-gold-50 hover:to-gold-100 dark:hover:from-gold-900/20 dark:hover:to-gold-800/20 rounded-lg cursor-pointer transition-all duration-200 flex items-center text-royal-800 dark:text-royal-100 hover:scale-105"
+                                  className="px-3 py-3 hover:bg-gradient-to-r hover:from-gold-50 hover:to-gold-100 rounded-lg cursor-pointer transition-all duration-200 flex items-center text-gray-800 hover:scale-105"
                       onClick={() => handleSelectType(type.name.toLowerCase())}
                     >
-                      <div className={`p-1 sm:p-1.5 bg-gradient-to-r ${type.color} rounded-md mr-2 sm:mr-3`}>
+                                  <div className={`p-1.5 bg-gradient-to-r ${type.color} rounded-md mr-3`}>
                         {type.icon}
                       </div>
-                      <span className="font-medium text-sm sm:text-base">{type.name}</span>
+                                  <span className="font-medium">{type.name}</span>
                     </div>
                   ))}
                 </div>
-              </div>
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
             </div>
 
             {/* Budget Field */}
             <div className="relative group">
               <div 
-                className="border-2 border-gray-200 dark:border-royal-700 rounded-lg sm:rounded-xl px-3 sm:px-4 py-3 sm:py-4 flex items-center cursor-pointer hover:border-gold-400 dark:hover:border-gold-500 transition-all duration-300 bg-white dark:bg-royal-800 group-hover:shadow-lg"
+                        className="border-2 border-gray-200 rounded-xl px-4 py-4 flex items-center cursor-pointer hover:border-gold-400 transition-all duration-300 bg-white group-hover:shadow-lg"
                 onClick={() => toggleDropdown('budget')}
               >
-                <div className="p-1.5 sm:p-2 bg-gradient-to-r from-emerald-400 to-emerald-600 rounded-lg mr-2 sm:mr-3">
-                  <DollarSign size={16} className="sm:w-5 sm:h-5 text-white" />
+                        <div className="p-2 bg-gradient-to-r from-emerald-400 to-emerald-600 rounded-lg mr-3">
+                          <DollarSign size={18} className="text-white" />
                 </div>
-                <div className="flex-1 min-w-0">
-                  <div className="text-xs text-royal-500 dark:text-royal-300 font-medium">Budget Range</div>
-                  <div className="text-royal-800 dark:text-royal-100 font-semibold text-sm sm:text-base truncate">
+                        <div className="flex-1">
+                          <div className="text-xs text-gray-500 font-medium">Budget Range</div>
+                          <div className="text-gray-800 font-semibold">
                     {selectedBudget || "Select Budget"}
                   </div>
                 </div>
-                <ChevronDown size={16} className="sm:w-[18px] sm:h-[18px] text-royal-400 dark:text-royal-200 group-hover:text-gold-500 transition-colors flex-shrink-0" />
+                        <ChevronDown size={18} className="text-gray-400 group-hover:text-gold-500 transition-colors" />
               </div>
               
-              {/* Budget Dropdown */}
-              <div className={cn(
-                "absolute left-0 right-0 mt-2 bg-white dark:bg-royal-800 rounded-lg sm:rounded-xl shadow-2xl z-50 border border-gray-200 dark:border-royal-700 transition-all duration-300 transform origin-top backdrop-blur-xl",
-                activeDropdown === 'budget' ? "opacity-100 scale-100" : "opacity-0 scale-95 pointer-events-none"
-              )}>
-                <div className="p-3">
-                  <div className="text-xs font-semibold text-royal-500 dark:text-royal-300 mb-2 px-2">Budget Range</div>
+                      <AnimatePresence>
+                        {activeDropdown === 'budget' && (
+                          <motion.div
+                            initial={{ opacity: 0, y: -10, scale: 0.95 }}
+                            animate={{ opacity: 1, y: 0, scale: 1 }}
+                            exit={{ opacity: 0, y: -10, scale: 0.95 }}
+                            className="absolute left-0 right-0 mt-2 bg-white rounded-xl shadow-2xl z-50 border border-gray-200"
+                          >
+                            <div className="p-4">
+                              <div className="text-xs font-semibold text-gray-500 mb-3">Budget Range</div>
                   {[
-                    { range: 'Under 50 Lac', icon: <DollarSign size={14} className="sm:w-4 sm:h-4" /> },
-                    { range: '50 Lac - 1 Cr', icon: <DollarSign size={14} className="sm:w-4 sm:h-4" /> },
-                    { range: '1 Cr - 2 Cr', icon: <DollarSign size={14} className="sm:w-4 sm:h-4" /> },
-                    { range: '2 Cr - 5 Cr', icon: <DollarSign size={14} className="sm:w-4 sm:h-4" /> },
-                    { range: '5 Cr+', icon: <DollarSign size={14} className="sm:w-4 sm:h-4" /> },
+                                { range: 'Under 50 Lac', icon: <DollarSign size={16} /> },
+                                { range: '50 Lac - 1 Cr', icon: <DollarSign size={16} /> },
+                                { range: '1 Cr - 2 Cr', icon: <DollarSign size={16} /> },
+                                { range: '2 Cr - 5 Cr', icon: <DollarSign size={16} /> },
+                                { range: '5 Cr+', icon: <DollarSign size={16} /> },
                   ].map((budget) => (
                     <div 
                       key={budget.range} 
-                      className="px-3 py-2 sm:py-3 hover:bg-gradient-to-r hover:from-gold-50 hover:to-gold-100 dark:hover:from-gold-900/20 dark:hover:to-gold-800/20 rounded-lg cursor-pointer transition-all duration-200 flex items-center text-royal-800 dark:text-royal-100 hover:scale-105"
+                                  className="px-3 py-3 hover:bg-gradient-to-r hover:from-gold-50 hover:to-gold-100 rounded-lg cursor-pointer transition-all duration-200 flex items-center text-gray-800 hover:scale-105"
                       onClick={() => handleSelectBudget(budget.range)}
                     >
-                      <div className="p-1 sm:p-1.5 bg-gradient-to-r from-emerald-400 to-emerald-600 rounded-md mr-2 sm:mr-3">
+                                  <div className="p-1.5 bg-gradient-to-r from-emerald-400 to-emerald-600 rounded-md mr-3">
                         {budget.icon}
                       </div>
-                      <span className="font-medium text-sm sm:text-base">{budget.range}</span>
+                                  <span className="font-medium">{budget.range}</span>
                     </div>
                   ))}
                 </div>
-              </div>
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
             </div>
             
             {/* Search Input */}
             <div className="relative group">
-              <div className="border-2 border-gray-200 dark:border-royal-700 rounded-lg sm:rounded-xl px-3 sm:px-4 py-3 sm:py-4 flex items-center bg-white dark:bg-royal-800 group-hover:border-gold-400 dark:group-hover:border-gold-500 transition-all duration-300 group-hover:shadow-lg">
-                <div className="p-1.5 sm:p-2 bg-gradient-to-r from-purple-400 to-purple-600 rounded-lg mr-2 sm:mr-3">
-                  <Search size={16} className="sm:w-5 sm:h-5 text-white" />
+                      <div className="border-2 border-gray-200 rounded-xl px-4 py-4 flex items-center bg-white group-hover:border-gold-400 transition-all duration-300 group-hover:shadow-lg">
+                        <div className="p-2 bg-gradient-to-r from-purple-400 to-purple-600 rounded-lg mr-3">
+                          <Search size={18} className="text-white" />
                 </div>
                 <input
                   type="text"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   placeholder="Search keywords..."
-                  className="flex-1 bg-transparent border-none outline-none text-royal-800 dark:text-royal-100 font-medium placeholder-royal-400 dark:placeholder-royal-500 text-sm sm:text-base"
+                          className="flex-1 bg-transparent border-none outline-none text-gray-800 font-medium placeholder-gray-400"
                 />
               </div>
             </div>
           </div>
 
           {/* Enhanced Search Button */}
-          <div className="flex justify-center">
             <motion.button
-              className="bg-gradient-to-r from-gold-500 to-gold-600 hover:from-gold-600 hover:to-gold-700 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-lg sm:rounded-xl font-semibold text-base sm:text-lg shadow-lg hover:shadow-xl transition-all duration-300 flex items-center group transform hover:scale-105 w-full sm:w-auto"
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    className="w-full bg-gradient-to-r from-gold-500 to-gold-600 hover:from-gold-600 hover:to-gold-700 text-white px-8 py-4 rounded-xl font-semibold text-lg shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center group"
               onClick={handleSearch}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
             >
-              <Search size={18} className="sm:w-5 sm:h-5 mr-2 group-hover:rotate-12 transition-transform duration-300" />
+                    <Search size={20} className="mr-2 group-hover:rotate-12 transition-transform duration-300" />
               Search Properties
-              <Zap size={18} className="sm:w-5 sm:h-5 ml-2 group-hover:animate-pulse" />
+                    <Zap size={20} className="ml-2 group-hover:animate-pulse" />
             </motion.button>
+                </motion.div>
+              </motion.div>
+            </div>
           </div>
-
-          {/* Quick Features */}
-          <div className="mt-4 sm:mt-6 pt-4 sm:pt-6 border-t border-gray-200 dark:border-royal-700">
-            <div className="flex flex-wrap justify-center gap-3 sm:gap-6 text-xs sm:text-sm">
-              <div className="flex items-center text-royal-600 dark:text-royal-300">
-                <Shield size={14} className="sm:w-4 sm:h-4 mr-1 text-gold-500" />
-                <span className="hidden sm:inline">Verified Properties</span>
-                <span className="sm:hidden">Verified</span>
-              </div>
-              <div className="flex items-center text-royal-600 dark:text-royal-300">
-                <Award size={14} className="sm:w-4 sm:h-4 mr-1 text-gold-500" />
-                <span className="hidden sm:inline">Best Deals</span>
-                <span className="sm:hidden">Best Deals</span>
-              </div>
-              <div className="flex items-center text-royal-600 dark:text-royal-300">
-                <Star size={14} className="sm:w-4 sm:h-4 mr-1 text-gold-500" />
-                <span className="hidden sm:inline">Premium Quality</span>
-                <span className="sm:hidden">Premium</span>
-              </div>
-              <div className="flex items-center text-royal-600 dark:text-royal-300">
-                <Zap size={14} className="sm:w-4 sm:h-4 mr-1 text-gold-500" />
-                <span className="hidden sm:inline">Instant Search</span>
-                <span className="sm:hidden">Instant</span>
-              </div>
+      </div>
+      
+        {/* Modern Statistics Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 50 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 1.2 }}
+          className="bg-white/95 backdrop-blur-xl border-t border-white/20 py-8 relative z-10 mt-auto"
+        >
+        <div className="container mx-auto px-4 sm:px-6 md:px-12 lg:px-24">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-8">
+              {[
+                { number: "8+", label: "Major Cities", icon: <MapPin size={24} className="text-gold-500" /> },
+                { number: "500+", label: "Properties", icon: <Home size={24} className="text-gold-500" /> },
+                { number: "1.2K+", label: "Happy Clients", icon: <Star size={24} className="text-gold-500" /> },
+                { number: "15+", label: "Years Experience", icon: <Award size={24} className="text-gold-500" /> },
+              ].map((stat, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: 1.4 + (index * 0.1) }}
+                  className="text-center group"
+                >
+                  <div className="flex justify-center mb-3 group-hover:scale-110 transition-transform duration-300">
+                    {stat.icon}
+            </div>
+                  <div className="text-gold-500 font-display text-3xl sm:text-4xl font-bold mb-2">
+                    {stat.number}
+            </div>
+                  <div className="text-gray-700 text-sm sm:text-base font-medium">
+                    {stat.label}
+            </div>
+                </motion.div>
+              ))}
             </div>
           </div>
         </motion.div>
-      </div>
-      
-      {/* Statistics */}
-      <div className="bg-white/90 dark:bg-royal-900/90 backdrop-blur-md border-t border-gray-100 dark:border-royal-800 py-4 sm:py-6 relative z-0 mt-auto">
-        <div className="container mx-auto px-4 sm:px-6 md:px-12 lg:px-24">
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6">
-            <div className="text-center animate-fade-up" style={{ animationDelay: '600ms' }}>
-              <div className="text-gold-500 font-display text-2xl sm:text-3xl md:text-4xl font-bold">8+</div>
-              <div className="text-royal-700 dark:text-royal-100 text-xs sm:text-sm md:text-base">Major Cities</div>
-            </div>
-            <div className="text-center animate-fade-up" style={{ animationDelay: '700ms' }}>
-              <div className="text-gold-500 font-display text-2xl sm:text-3xl md:text-4xl font-bold">500+</div>
-              <div className="text-royal-700 dark:text-royal-100 text-xs sm:text-sm md:text-base">Properties</div>
-            </div>
-            <div className="text-center animate-fade-up" style={{ animationDelay: '800ms' }}>
-              <div className="text-gold-500 font-display text-2xl sm:text-3xl md:text-4xl font-bold">1.2K+</div>
-              <div className="text-royal-700 dark:text-royal-100 text-xs sm:text-sm md:text-base">Happy Clients</div>
-            </div>
-            <div className="text-center animate-fade-up" style={{ animationDelay: '900ms' }}>
-              <div className="text-gold-500 font-display text-2xl sm:text-3xl md:text-4xl font-bold">15+</div>
-              <div className="text-royal-700 dark:text-royal-100 text-xs sm:text-sm md:text-base">Years of Experience</div>
-            </div>
-          </div>
-        </div>
-      </div>
     </section>
+
+      {/* Video Modal */}
+      <VideoModal
+        isOpen={showVideoModal}
+        onClose={() => setShowVideoModal(false)}
+        videoSource="drive"
+        videoUrl="https://drive.google.com/file/d/16Pb_1fz2UsbA2NlRZvKXvdBiWNc2_aqD/preview"
+      />
+    </>
   );
 };
 
