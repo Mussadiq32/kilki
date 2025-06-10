@@ -142,7 +142,7 @@ const Hero = () => {
         <div className="max-w-3xl animate-fade-up" style={{ animationDelay: '200ms' }}>
           <AnimatedHeading />
           <p className="text-white/90 dark:text-royal-100 text-base sm:text-lg md:text-xl mb-6 sm:mb-8 max-w-2xl">
-            Discover premium properties across major Indian cities with Royal Group of Real Estate, your trusted partner in real estate excellence.
+            Discover premium properties across major Indian cities with Royal Group of Real Estates, your trusted partner in real estate excellence.
           </p>
         </div>
 
