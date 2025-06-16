@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { Menu, X, ChevronDown, Phone, Home, Briefcase, Wrench, Info, Mail, Settings, ClipboardList, Handshake, Wallet, LandPlot } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -25,6 +25,110 @@ const toolItems = [
   { name: 'Property News', href: 'https://www.99acres.com/real-estate-insights-irffid?referrer_section=SIDE_MENU', icon: null },
 ];
 
+// Memoized Mobile Menu Item Component
+const MobileMenuItem = React.memo(({ 
+  item, 
+  onClick, 
+  delay = 0, 
+  isVisible 
+}: { 
+  item: any; 
+  onClick: () => void; 
+  delay?: number; 
+  isVisible: boolean; 
+}) => {
+  const Icon = item.icon;
+  
+  return (
+    <div
+      className={cn(
+        "transform transition-all duration-300 ease-out",
+        isVisible ? "translate-x-0 opacity-100" : "-translate-x-full opacity-0"
+      )}
+      style={{ transitionDelay: `${delay}ms` }}
+    >
+      <Link
+        to={item.path}
+        className="flex items-center space-x-3 p-4 rounded-xl bg-white/90 dark:bg-royal-800/90 backdrop-blur-sm border border-white/20 dark:border-royal-600/20 shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 group"
+        onClick={onClick}
+      >
+        {Icon && <Icon size={20} className="text-royal-600 dark:text-gold-400 group-hover:text-gold-500 transition-colors duration-300" />}
+        <span className="font-medium text-royal-800 dark:text-white group-hover:text-gold-500 transition-colors duration-300">
+          {item.name}
+        </span>
+      </Link>
+    </div>
+  );
+});
+
+// Memoized Service Item Component
+const MobileServiceItem = React.memo(({ 
+  item, 
+  onClick, 
+  delay = 0, 
+  isVisible 
+}: { 
+  item: any; 
+  onClick: () => void; 
+  delay?: number; 
+  isVisible: boolean; 
+}) => {
+  return (
+    <div
+      className={cn(
+        "transform transition-all duration-300 ease-out",
+        isVisible ? "translate-x-0 opacity-100" : "-translate-x-full opacity-0"
+      )}
+      style={{ transitionDelay: `${delay}ms` }}
+    >
+      <Link
+        to={item.path}
+        className="flex items-center space-x-3 p-4 rounded-xl bg-gradient-to-r from-gold-400/80 to-royal-500/80 backdrop-blur-sm border border-gold-300/30 dark:border-royal-400/30 shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 group"
+        onClick={onClick}
+      >
+        <span className="font-medium text-white group-hover:text-gold-200 transition-colors duration-300">
+          {item.name}
+        </span>
+      </Link>
+    </div>
+  );
+});
+
+// Memoized Tool Item Component
+const MobileToolItem = React.memo(({ 
+  item, 
+  onClick, 
+  delay = 0, 
+  isVisible 
+}: { 
+  item: any; 
+  onClick: () => void; 
+  delay?: number; 
+  isVisible: boolean; 
+}) => {
+  return (
+    <div
+      className={cn(
+        "transform transition-all duration-300 ease-out",
+        isVisible ? "translate-x-0 opacity-100" : "-translate-x-full opacity-0"
+      )}
+      style={{ transitionDelay: `${delay}ms` }}
+    >
+      <a
+        href={item.href}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="flex items-center space-x-3 p-4 rounded-xl bg-gradient-to-r from-royal-500/80 to-royal-600/80 backdrop-blur-sm border border-royal-400/30 shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 group"
+        onClick={onClick}
+      >
+        <span className="font-medium text-white group-hover:text-royal-200 transition-colors duration-300">
+          {item.name}
+        </span>
+      </a>
+    </div>
+  );
+});
+
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -32,57 +136,75 @@ const Navbar = () => {
   const [isToolsDropdownOpen, setIsToolsDropdownOpen] = useState(false);
   const { user, isAuthenticated, isAdmin } = useAuth();
 
-  useEffect(() => {
-    const handleScroll = () => {
-      if (window.scrollY > 10) {
-        setIsScrolled(true);
-      } else {
-        setIsScrolled(false);
-      }
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+  // Memoize scroll handler to prevent unnecessary re-renders
+  const handleScroll = useCallback(() => {
+    const scrolled = window.scrollY > 10;
+    setIsScrolled(scrolled);
   }, []);
 
   useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      const target = event.target as HTMLElement;
-      // Close mobile menu if clicked outside
-      if (isMobileMenuOpen && !target.closest('.mobile-menu-container') && !target.closest('button[aria-label="Toggle menu"]')) {
-        closeMobileMenu();
-      }
-    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [handleScroll]);
 
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
+  // Optimized click outside handler
+  const handleClickOutside = useCallback((event: MouseEvent) => {
+    const target = event.target as HTMLElement;
+    if (isMobileMenuOpen && !target.closest('.mobile-menu-container') && !target.closest('button[aria-label="Toggle menu"]')) {
+      closeMobileMenu();
+    }
   }, [isMobileMenuOpen]);
 
-  const toggleMobileMenu = () => {
-    setIsMobileMenuOpen(!isMobileMenuOpen);
-    document.body.style.overflow = !isMobileMenuOpen ? 'hidden' : 'auto';
-  };
+  useEffect(() => {
+    if (isMobileMenuOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+      document.addEventListener('keydown', handleEscapeKey);
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'auto';
+    }
 
-  const closeMobileMenu = () => {
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('keydown', handleEscapeKey);
+      document.body.style.overflow = 'auto';
+    };
+  }, [isMobileMenuOpen, handleClickOutside]);
+
+  // Handle escape key
+  const handleEscapeKey = useCallback((event: KeyboardEvent) => {
+    if (event.key === 'Escape' && isMobileMenuOpen) {
+      closeMobileMenu();
+    }
+  }, [isMobileMenuOpen]);
+
+  const toggleMobileMenu = useCallback(() => {
+    setIsMobileMenuOpen(prev => !prev);
+  }, []);
+
+  const closeMobileMenu = useCallback(() => {
     setIsMobileMenuOpen(false);
-    document.body.style.overflow = 'auto';
-  };
+  }, []);
 
-  // No more dropdown toggles for mobile, as we are prioritizing scrollable content
-  const toggleDropdown = () => {
-    setIsDropdownOpen(!isDropdownOpen);
-  };
+  const toggleDropdown = useCallback(() => {
+    setIsDropdownOpen(prev => !prev);
+  }, []);
 
-  const toggleToolsDropdown = () => {
-    setIsToolsDropdownOpen(!isToolsDropdownOpen);
-  };
+  const toggleToolsDropdown = useCallback(() => {
+    setIsToolsDropdownOpen(prev => !prev);
+  }, []);
+
+  // Memoize logo source
+  const logoSource = useMemo(() => {
+    return isScrolled ? "https://iili.io/2mPx3rP.png" : "https://iili.io/2mPxFWb.png";
+  }, [isScrolled]);
 
   return (
     <header className={`fixed w-full z-[9999] transition-all duration-300 backdrop-blur-sm ${isScrolled ? 'bg-white/90 dark:bg-royal-900/90 shadow-lg py-4' : 'bg-transparent py-6'}`}>
       <div className="container mx-auto px-4 flex justify-between items-center">
         <Link to="/" className="flex items-center transition-transform hover:scale-105">
           <img 
-            src={isScrolled ? "https://iili.io/2mPx3rP.png" : "https://iili.io/2mPxFWb.png"} 
+            src={logoSource} 
             alt="Royal Group of Real Estates Logo" 
             className="h-10 md:h-12"
           />
@@ -105,11 +227,13 @@ const Navbar = () => {
             <button 
               onClick={toggleDropdown}
               className="flex items-center font-medium group-hover:text-gold-500 transition-all duration-300 hover:-translate-y-0.5"
+              aria-expanded={isDropdownOpen}
+              aria-haspopup="true"
             >
               Services
               <ChevronDown size={16} className="ml-1 transition-transform duration-300 group-hover:rotate-180" />
             </button>
-            {isDropdownOpen && !isMobileMenuOpen && ( // Hide desktop dropdown when mobile menu is open
+            {isDropdownOpen && !isMobileMenuOpen && (
               <div className="absolute top-full left-0 mt-2 w-48 bg-white/95 dark:bg-royal-900/95 backdrop-blur-sm rounded-lg shadow-xl py-2 z-[1000] animate-in fade-in-0 zoom-in-95 duration-200">
                 <Link 
                   to="/services/buying" 
@@ -142,11 +266,13 @@ const Navbar = () => {
             <button 
               onClick={toggleToolsDropdown}
               className="flex items-center font-medium group-hover:text-gold-500 transition-all duration-300 hover:-translate-y-0.5"
+              aria-expanded={isToolsDropdownOpen}
+              aria-haspopup="true"
             >
               Tools
               <ChevronDown size={16} className="ml-1 transition-transform duration-300 group-hover:rotate-180" />
             </button>
-            {isToolsDropdownOpen && !isMobileMenuOpen && ( // Hide desktop dropdown when mobile menu is open
+            {isToolsDropdownOpen && !isMobileMenuOpen && (
               <div className="absolute top-full left-0 mt-2 w-48 bg-white/95 dark:bg-royal-900/95 backdrop-blur-sm rounded-lg shadow-xl py-2 z-[1000] animate-in fade-in-0 zoom-in-95 duration-200">
                 <a 
                   href="https://www.99acres.com/property-rates-and-price-trends-prffid"
@@ -214,12 +340,13 @@ const Navbar = () => {
             </CustomButton>
           </Link>
           
-          {/* HAMBURGER MENU BUTTON */}
+          {/* OPTIMIZED HAMBURGER MENU BUTTON */}
           <button 
-            className="lg:hidden flex items-center justify-center w-11 h-11 rounded-xl bg-white/90 dark:bg-royal-800/90 backdrop-blur-sm shadow-lg text-gray-700 dark:text-white transition-all duration-300 hover:scale-105 hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-gold-300"
+            className="lg:hidden flex items-center justify-center w-11 h-11 rounded-xl bg-white/90 dark:bg-royal-800/90 backdrop-blur-sm shadow-lg text-gray-700 dark:text-white transition-all duration-300 hover:scale-105 hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-gold-300 focus:ring-offset-2"
             onClick={toggleMobileMenu}
-            aria-label="Toggle menu"
+            aria-label="Toggle mobile menu"
             aria-expanded={isMobileMenuOpen}
+            aria-controls="mobile-menu"
           >
             <div className="relative w-6 h-6">
               {/* Top line */}
@@ -242,166 +369,152 @@ const Navbar = () => {
         </div>
       </div>
       
-      {/* MOBILE MENU OVERLAY */}
-      <div className={cn(
-        "lg:hidden fixed inset-0 z-[9999] transition-all duration-500 ease-in-out",
-        isMobileMenuOpen 
-          ? "opacity-100 pointer-events-auto" 
-          : "opacity-0 pointer-events-none"
-      )}>
+      {/* OPTIMIZED MOBILE MENU OVERLAY */}
+      <div 
+        id="mobile-menu"
+        className={cn(
+          "lg:hidden fixed inset-0 z-[9999] transition-all duration-300 ease-in-out",
+          isMobileMenuOpen 
+            ? "opacity-100 pointer-events-auto" 
+            : "opacity-0 pointer-events-none"
+        )}
+        role="dialog"
+        aria-modal="true"
+        aria-label="Mobile navigation menu"
+      >
         {/* Backdrop */}
         <div 
-          className="absolute inset-0 bg-gradient-to-br from-royal-900/80 via-black/60 to-gold-900/40 backdrop-blur-xl transition-opacity duration-500"
+          className="absolute inset-0 bg-gradient-to-br from-royal-900/80 via-black/60 to-gold-900/40 backdrop-blur-xl transition-opacity duration-300"
           onClick={closeMobileMenu}
+          aria-hidden="true"
         />
         
         {/* Menu Container */}
         <div className={cn(
-          "mobile-menu-container fixed inset-0 flex items-center justify-center transition-all duration-500 ease-in-out",
-          isMobileMenuOpen ? "scale-100 opacity-100" : "scale-75 opacity-0"
+          "mobile-menu-container fixed inset-0 flex flex-col transition-all duration-300 ease-in-out",
+          isMobileMenuOpen ? "translate-x-0" : "translate-x-full"
         )}>
-          {/* Central Hub */}
-          <div className="relative w-80 h-80">
-            {/* User Profile Center */}
-            <div className="absolute inset-0 flex items-center justify-center">
-              <div className="relative group cursor-pointer" onClick={closeMobileMenu}>
-                <div className="w-24 h-24 rounded-full bg-gradient-to-br from-gold-400 via-royal-500 to-gold-600 flex items-center justify-center text-white font-bold text-2xl shadow-2xl transition-all duration-300 hover:scale-110 hover:shadow-gold-500/25">
-                  {user ? user.name?.charAt(0).toUpperCase() : 'G'}
-                </div>
-                <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 bg-white dark:bg-royal-800 px-3 py-1 rounded-full shadow-lg text-xs font-medium text-gray-700 dark:text-white whitespace-nowrap">
+          {/* Header */}
+          <div className="flex items-center justify-between p-6 bg-white/95 dark:bg-royal-900/95 backdrop-blur-sm border-b border-white/20 dark:border-royal-600/20">
+            <div className="flex items-center space-x-3">
+              <div className="w-10 h-10 rounded-full bg-gradient-to-br from-gold-400 to-royal-500 flex items-center justify-center text-white font-bold">
+                {user ? user.name?.charAt(0).toUpperCase() : 'G'}
+              </div>
+              <div>
+                <p className="font-medium text-royal-800 dark:text-white">
                   {user ? user.name : 'Guest'}
-                </div>
+                </p>
+                <p className="text-sm text-gray-600 dark:text-gray-400">
+                  {isAuthenticated ? 'Welcome back!' : 'Sign in to continue'}
+                </p>
               </div>
             </div>
+            <button
+              onClick={closeMobileMenu}
+              className="p-2 rounded-lg bg-gray-100 dark:bg-royal-800 hover:bg-gray-200 dark:hover:bg-royal-700 transition-colors duration-200"
+              aria-label="Close menu"
+            >
+              <X size={20} className="text-gray-600 dark:text-gray-300" />
+            </button>
+          </div>
 
-            {/* Orbital Menu Items */}
-            {menuItems.map((item, index) => {
-              const Icon = item.icon;
-              const angle = (index * 360) / menuItems.length;
-              const radius = 120;
-              const x = Math.cos((angle - 90) * Math.PI / 180) * radius;
-              const y = Math.sin((angle - 90) * Math.PI / 180) * radius;
-              
-              return (
-                <div
+          {/* Menu Content */}
+          <div className="flex-1 overflow-y-auto p-6 space-y-4">
+            {/* Main Menu Items */}
+            <div className="space-y-3">
+              <h3 className="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-4">
+                Navigation
+              </h3>
+              {menuItems.map((item, index) => (
+                <MobileMenuItem
                   key={item.name}
-                  className="absolute w-16 h-16 transition-all duration-700 ease-out"
-                  style={{
-                    left: `calc(50% + ${x}px - 32px)`,
-                    top: `calc(50% + ${y}px - 32px)`,
-                    transform: isMobileMenuOpen ? 'scale(1)' : 'scale(0)',
-                    transitionDelay: `${index * 100}ms`
-                  }}
+                  item={item}
+                  onClick={closeMobileMenu}
+                  delay={index * 50}
+                  isVisible={isMobileMenuOpen}
+                />
+              ))}
+            </div>
+
+            {/* Services */}
+            <div className="space-y-3">
+              <h3 className="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-4">
+                Services
+              </h3>
+              {serviceItems.map((item, index) => (
+                <MobileServiceItem
+                  key={item.name}
+                  item={item}
+                  onClick={closeMobileMenu}
+                  delay={(index + menuItems.length) * 50}
+                  isVisible={isMobileMenuOpen}
+                />
+              ))}
+            </div>
+
+            {/* Tools */}
+            <div className="space-y-3">
+              <h3 className="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-4">
+                Tools
+              </h3>
+              {toolItems.map((item, index) => (
+                <MobileToolItem
+                  key={item.name}
+                  item={item}
+                  onClick={closeMobileMenu}
+                  delay={(index + menuItems.length + serviceItems.length) * 50}
+                  isVisible={isMobileMenuOpen}
+                />
+              ))}
+            </div>
+
+            {/* Admin Panel */}
+            {isAuthenticated && isAdmin && (
+              <div className="space-y-3">
+                <h3 className="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-4">
+                  Admin
+                </h3>
+                <div
+                  className={cn(
+                    "transform transition-all duration-300 ease-out",
+                    isMobileMenuOpen ? "translate-x-0 opacity-100" : "-translate-x-full opacity-0"
+                  )}
+                  style={{ transitionDelay: '400ms' }}
                 >
                   <Link
-                    to={item.path}
-                    className="w-full h-full rounded-full bg-white/90 dark:bg-royal-800/90 backdrop-blur-sm border border-white/20 dark:border-royal-600/20 flex items-center justify-center shadow-xl hover:shadow-2xl hover:scale-110 transition-all duration-300 group"
+                    to="/admin"
+                    className="flex items-center space-x-3 p-4 rounded-xl bg-gradient-to-r from-red-500/80 to-red-600/80 backdrop-blur-sm border border-red-300/30 shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 group"
                     onClick={closeMobileMenu}
                   >
-                    <Icon size={24} className="text-royal-600 dark:text-gold-400 group-hover:text-gold-500 dark:group-hover:text-gold-300 transition-colors duration-300" />
+                    <Settings size={20} className="text-white group-hover:text-red-100 transition-colors duration-300" />
+                    <span className="font-medium text-white group-hover:text-red-100 transition-colors duration-300">
+                      Admin Panel
+                    </span>
                   </Link>
                 </div>
-              );
-            })}
+              </div>
+            )}
+          </div>
 
-            {/* Outer Ring - Services */}
-            {serviceItems.map((item, index) => {
-              const angle = (index * 360) / serviceItems.length;
-              const radius = 180;
-              const x = Math.cos((angle - 90) * Math.PI / 180) * radius;
-              const y = Math.sin((angle - 90) * Math.PI / 180) * radius;
-              
-              return (
-                <div
-                  key={item.name}
-                  className="absolute w-20 h-20 transition-all duration-700 ease-out"
-                  style={{
-                    left: `calc(50% + ${x}px - 40px)`,
-                    top: `calc(50% + ${y}px - 40px)`,
-                    transform: isMobileMenuOpen ? 'scale(1)' : 'scale(0)',
-                    transitionDelay: `${(index + menuItems.length) * 100}ms`
-                  }}
-                >
-                  <Link
-                    to={item.path}
-                    className="w-full h-full rounded-2xl bg-gradient-to-br from-gold-400/80 to-royal-500/80 backdrop-blur-sm border border-gold-300/30 dark:border-royal-400/30 flex items-center justify-center shadow-xl hover:shadow-2xl hover:scale-110 transition-all duration-300 group"
-                    onClick={closeMobileMenu}
-                  >
-                    <span className="text-xs font-bold text-white text-center px-1 leading-tight">{item.name}</span>
-                  </Link>
-                </div>
-              );
-            })}
-
-            {/* Tools Ring - External Links */}
-            {toolItems.map((item, index) => {
-              const angle = (index * 360) / toolItems.length;
-              const radius = 240;
-              const x = Math.cos((angle - 90) * Math.PI / 180) * radius;
-              const y = Math.sin((angle - 90) * Math.PI / 180) * radius;
-              
-              return (
-                <div
-                  key={item.name}
-                  className="absolute w-16 h-16 transition-all duration-700 ease-out"
-                  style={{
-                    left: `calc(50% + ${x}px - 32px)`,
-                    top: `calc(50% + ${y}px - 32px)`,
-                    transform: isMobileMenuOpen ? 'scale(1)' : 'scale(0)',
-                    transitionDelay: `${(index + menuItems.length + serviceItems.length) * 100}ms`
-                  }}
-                >
-                  <a
-                    href={item.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="w-full h-full rounded-full bg-gradient-to-br from-royal-500/80 to-royal-600/80 backdrop-blur-sm border border-royal-400/30 flex items-center justify-center shadow-xl hover:shadow-2xl hover:scale-110 transition-all duration-300 group"
-                    onClick={closeMobileMenu}
-                  >
-                    <span className="text-xs font-bold text-white text-center px-1 leading-tight">{item.name.split(' ')[0]}</span>
-                  </a>
-                </div>
-              );
-            })}
-
-            {/* Floating Action Buttons */}
-            <div className="absolute -bottom-20 left-1/2 transform -translate-x-1/2 flex space-x-4">
+          {/* Footer Actions */}
+          <div className="p-6 bg-white/95 dark:bg-royal-900/95 backdrop-blur-sm border-t border-white/20 dark:border-royal-600/20">
+            <div className="flex space-x-3">
               <CustomButton 
                 variant="primary" 
-                className="w-32 h-12 rounded-full bg-gradient-to-r from-gold-400 to-gold-600 text-white font-bold shadow-xl hover:shadow-2xl hover:scale-105 transition-all duration-300"
+                className="flex-1 h-12 rounded-xl bg-gradient-to-r from-gold-400 to-gold-600 text-white font-bold shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300"
                 onClick={closeMobileMenu}
               >
                 {isAuthenticated ? 'Dashboard' : 'Sign In'}
               </CustomButton>
               <a 
                 href="tel:7006064587" 
-                className="w-32 h-12 rounded-full bg-gradient-to-r from-royal-500 to-royal-700 text-white font-bold shadow-xl hover:shadow-2xl hover:scale-105 transition-all duration-300 flex items-center justify-center"
+                className="flex items-center justify-center w-12 h-12 rounded-xl bg-gradient-to-r from-royal-500 to-royal-700 text-white font-bold shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300"
                 onClick={closeMobileMenu}
+                aria-label="Call us"
               >
-                <Phone size={18} />
+                <Phone size={20} />
               </a>
             </div>
-
-            {/* Admin Panel - Special Position */}
-            {isAuthenticated && isAdmin && (
-              <div
-                className="absolute w-16 h-16 transition-all duration-700 ease-out"
-                style={{
-                  left: 'calc(50% + 0px - 32px)',
-                  top: 'calc(50% + 140px - 32px)',
-                  transform: isMobileMenuOpen ? 'scale(1)' : 'scale(0)',
-                  transitionDelay: '800ms'
-                }}
-              >
-                <Link
-                  to="/admin"
-                  className="w-full h-full rounded-full bg-gradient-to-br from-red-500/80 to-red-600/80 backdrop-blur-sm border border-red-300/30 flex items-center justify-center shadow-xl hover:shadow-2xl hover:scale-110 transition-all duration-300 group"
-                  onClick={closeMobileMenu}
-                >
-                  <Settings size={24} className="text-white group-hover:text-red-100 transition-colors duration-300" />
-                </Link>
-              </div>
-            )}
           </div>
         </div>
       </div>

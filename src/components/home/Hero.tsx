@@ -153,9 +153,10 @@ const Hero = () => {
           {/* Main Background Image */}
           <div className="absolute inset-0">
         <img 
-          src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb&w=3000" 
+          src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb&w=1600" 
           alt="Luxury home" 
           className="w-full h-full object-cover"
+          loading="lazy"
         />
       </div>
 
@@ -166,21 +167,22 @@ const Hero = () => {
           {/* Animated Gradient Mesh */}
           <div className="absolute inset-0 bg-gradient-to-r from-purple-500/10 via-transparent to-gold-500/10 animate-pulse"></div>
           
-          {/* Floating Particles Effect */}
+          {/* Floating Particles Effect - Optimized */}
           <div className="absolute inset-0 overflow-hidden">
-            {[...Array(20)].map((_, i) => (
+            {[...Array(8)].map((_, i) => (
               <motion.div
                 key={i}
-                className="absolute w-2 h-2 bg-gold-400/30 rounded-full"
+                className="absolute w-1.5 h-1.5 bg-gold-400/20 rounded-full"
                 animate={{
-                  x: [0, 100, 0],
-                  y: [0, -100, 0],
-                  opacity: [0.3, 0.8, 0.3],
+                  x: [0, Math.random() * 200 - 100, 0],
+                  y: [0, Math.random() * 200 - 100, 0],
+                  opacity: [0.2, 0.6, 0.2],
                 }}
                 transition={{
-                  duration: 8 + Math.random() * 4,
+                  duration: 10 + Math.random() * 5,
                   repeat: Infinity,
-                  delay: Math.random() * 2,
+                  ease: "linear",
+                  delay: Math.random() * 3,
                 }}
                 style={{
                   left: `${Math.random() * 100}%`,

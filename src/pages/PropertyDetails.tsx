@@ -39,40 +39,33 @@ const PropertyDetails = () => {
       setError(null);
       try {
         console.log('Fetching property with id:', id);
-        // Fetch property details
-        const { data: propertyData, error: propertyError } = await supabase
-          .from('properties')
-          .select('*')
-          .eq('id', id)
-          .single();
-        if (propertyError) throw propertyError;
-        setProperty(propertyData);
-        // Fetch property images
-        const { data: mediaData, error: mediaError } = await supabase
-          .from('property_media')
-          .select('media_url')
-          .eq('property_id', id)
-          .eq('media_type', 'image')
-          .order('display_order', { ascending: true });
-        if (mediaError) {
-          console.error('Error fetching images:', mediaError);
+        
+        const [propertyResponse, mediaResponse] = await Promise.all([
+          supabase.from('properties').select('*').eq('id', id).single(),
+          supabase.from('property_media').select('media_url').eq('property_id', id).eq('media_type', 'image').order('display_order', { ascending: true })
+        ]);
+
+        if (propertyResponse.error) throw propertyResponse.error;
+        setProperty(propertyResponse.data);
+        
+        if (mediaResponse.error) {
+          console.error('Error fetching images:', mediaResponse.error);
         }
-        if (mediaData && mediaData.length > 0) {
-          setImages(mediaData.map(item => item.media_url));
+        if (mediaResponse.data && mediaResponse.data.length > 0) {
+          setImages(mediaResponse.data.map(item => item.media_url));
         } else {
-          // Fallback to property image
-          setImages([propertyData.image || 'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=800']);
+          // Fallback to property image or a local placeholder
+          setImages([propertyResponse.data.image || '/placeholder.svg']);
         }
       } catch (error: any) {
         console.error('Error fetching property:', error);
         setError(error.message || 'Unknown error');
-        // navigate('/properties'); // Comment out redirect for debugging
       } finally {
         setLoading(false);
       }
     };
     fetchProperty();
-  }, [id, navigate]);
+  }, [id]);
 
   const handleShare = () => {
     if (navigator.share) {
@@ -186,7 +179,7 @@ const PropertyDetails = () => {
             <div className="space-y-4">
               <div className="relative">
                 <img
-                  src={images[currentImageIndex] || property.image}
+                  src={images[currentImageIndex] || property.image || '/placeholder.svg'}
                   alt={property.title}
                   className="w-full h-[400px] object-cover rounded-lg"
                 />

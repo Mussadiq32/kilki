@@ -5,6 +5,11 @@ import CustomButton from '../ui/CustomButton';
 import { ArrowRight, Sparkles, Crown, Building2, Home, TrendingUp } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 import { Skeleton } from '@/components/ui/skeleton';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Pagination, Navigation, Autoplay } from 'swiper/modules';
+import 'swiper/css';
+import 'swiper/css/pagination';
+import 'swiper/css/navigation';
 
 interface Property {
   id: string;
@@ -75,19 +80,8 @@ const FeaturedProperties = () => {
   };
 
   return (
-    <section id="featured" className="relative section-padding bg-gradient-to-br from-royal-50/80 via-white to-gold-50/30 overflow-hidden">
-      {/* Animated Background Elements */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {/* Floating particles */}
-        <div className="absolute top-1/4 left-1/4 w-3 h-3 bg-gold-400/20 rounded-full animate-pulse"></div>
-        <div className="absolute top-1/3 right-1/3 w-2 h-2 bg-royal-400/30 rounded-full animate-bounce" style={{ animationDelay: '1s' }}></div>
-        <div className="absolute bottom-1/4 left-1/3 w-1.5 h-1.5 bg-gold-300/25 rounded-full animate-ping" style={{ animationDelay: '2s' }}></div>
-        <div className="absolute top-1/2 left-1/2 w-4 h-4 bg-royal-500/10 rounded-full animate-pulse" style={{ animationDelay: '3s' }}></div>
-        
-        {/* Gradient orbs */}
-        <div className="absolute -top-20 -right-20 w-40 h-40 bg-gradient-to-br from-gold-400/10 to-royal-500/10 rounded-full blur-3xl animate-pulse"></div>
-        <div className="absolute -bottom-20 -left-20 w-60 h-60 bg-gradient-to-tr from-royal-400/5 to-gold-500/5 rounded-full blur-3xl animate-bounce" style={{ animationDelay: '2s' }}></div>
-      </div>
+    <section className="py-16 sm:py-20 lg:py-24 bg-gradient-to-br from-royal-50 to-gold-50 overflow-hidden relative">
+      <div className="absolute inset-0 bg-pattern-light opacity-50 z-0"></div>
 
       <div className="container mx-auto relative z-10">
         {/* Enhanced Header Section */}
@@ -150,62 +144,42 @@ const FeaturedProperties = () => {
               onClick={() => setActiveTab('residential')}
               className={`relative group px-6 py-3 rounded-2xl text-sm font-medium transition-all duration-300 ${
                 activeTab === 'residential' 
-                  ? 'bg-gradient-to-r from-blue-400 to-blue-600 text-white shadow-lg shadow-blue-500/25' 
+                  ? 'bg-gradient-to-r from-gold-400 to-gold-600 text-white shadow-lg shadow-gold-500/25' 
                   : 'bg-white/80 backdrop-blur-sm text-royal-700 hover:bg-white hover:shadow-lg border border-white/20'
               }`}
             >
               <span className="flex items-center space-x-2">
-                <Home size={16} className={activeTab === 'residential' ? 'text-white' : 'text-blue-500'} />
+                <Home size={16} className={activeTab === 'residential' ? 'text-white' : 'text-royal-500'} />
                 <span>Residential</span>
               </span>
               {activeTab === 'residential' && (
-                <div className="absolute inset-0 bg-gradient-to-r from-blue-400 to-blue-600 rounded-2xl opacity-0 group-hover:opacity-20 transition-opacity duration-300"></div>
+                <div className="absolute inset-0 bg-gradient-to-r from-gold-400 to-gold-600 rounded-2xl opacity-0 group-hover:opacity-20 transition-opacity duration-300"></div>
               )}
             </button>
             <button
               onClick={() => setActiveTab('commercial')}
               className={`relative group px-6 py-3 rounded-2xl text-sm font-medium transition-all duration-300 ${
                 activeTab === 'commercial' 
-                  ? 'bg-gradient-to-r from-purple-400 to-purple-600 text-white shadow-lg shadow-purple-500/25' 
+                  ? 'bg-gradient-to-r from-gold-400 to-gold-600 text-white shadow-lg shadow-gold-500/25' 
                   : 'bg-white/80 backdrop-blur-sm text-royal-700 hover:bg-white hover:shadow-lg border border-white/20'
               }`}
             >
               <span className="flex items-center space-x-2">
-                <Building2 size={16} className={activeTab === 'commercial' ? 'text-white' : 'text-purple-500'} />
+                <Building2 size={16} className={activeTab === 'commercial' ? 'text-white' : 'text-green-500'} />
                 <span>Commercial</span>
               </span>
               {activeTab === 'commercial' && (
-                <div className="absolute inset-0 bg-gradient-to-r from-purple-400 to-purple-600 rounded-2xl opacity-0 group-hover:opacity-20 transition-opacity duration-300"></div>
+                <div className="absolute inset-0 bg-gradient-to-r from-gold-400 to-gold-600 rounded-2xl opacity-0 group-hover:opacity-20 transition-opacity duration-300"></div>
               )}
             </button>
           </div>
         </div>
         
-        {/* Enhanced Loading State */}
+        {/* Property Cards Grid/Carousel */}
         {loading ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-            {[1, 2, 3, 4, 5, 6].map((index) => (
-              <div key={index} className="space-y-4 animate-pulse">
-                <div className="relative">
-                  <Skeleton className="h-[220px] w-full rounded-2xl" />
-                  <div className="absolute top-4 right-4">
-                    <Skeleton className="h-10 w-10 rounded-full" />
-                  </div>
-                  <div className="absolute top-4 left-4">
-                    <Skeleton className="h-6 w-16 rounded-lg" />
-                  </div>
-                </div>
-                <div className="space-y-3">
-                  <Skeleton className="h-6 w-3/4" />
-                  <Skeleton className="h-4 w-1/2" />
-                  <div className="flex gap-3">
-                    <Skeleton className="h-4 w-12" />
-                    <Skeleton className="h-4 w-12" />
-                    <Skeleton className="h-4 w-12" />
-                  </div>
-                  <Skeleton className="h-8 w-1/3" />
-                </div>
-              </div>
+            {[...Array(3)].map((_, index) => (
+              <Skeleton key={index} className="h-[400px] w-full rounded-2xl" />
             ))}
           </div>
         ) : filteredProperties.length === 0 ? (
@@ -219,14 +193,32 @@ const FeaturedProperties = () => {
             </div>
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+          <Swiper
+            modules={[Pagination, Navigation, Autoplay]}
+            spaceBetween={30}
+            slidesPerView={1}
+            navigation
+            pagination={{ clickable: true }}
+            autoplay={{ delay: 5000, disableOnInteraction: false }}
+            breakpoints={{
+              640: {
+                slidesPerView: 2,
+                spaceBetween: 20,
+              },
+              1024: {
+                slidesPerView: 3,
+                spaceBetween: 30,
+              },
+            }}
+            className="mySwiper !pb-10" // Added padding-bottom to prevent pagination from overlapping cards
+          >
             {filteredProperties.map((property, index) => (
+              <SwiperSlide key={property.id} className="pb-4"> {/* Added padding-bottom to individual slides */}
               <div 
-                key={property.id} 
-                className="animate-fade-up group"
+                  className="animate-fade-up group h-full"
                 style={{ animationDelay: `${(index + 1) * 150}ms` }}
               >
-                <div className="relative">
+                  <div className="relative h-full flex flex-col">
                   <PropertyCard 
                     id={property.id}
                     title={property.title}
@@ -243,28 +235,22 @@ const FeaturedProperties = () => {
                   <div className="absolute inset-0 bg-gradient-to-t from-gold-500/10 to-transparent rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
                 </div>
               </div>
+              </SwiperSlide>
             ))}
-          </div>
+          </Swiper>
         )}
         
         {/* Enhanced CTA Section */}
-        <div className="flex justify-center mt-12 sm:mt-16 animate-fade-up animate-delay-500">
-          <div className="relative group">
+        <div className="text-center mt-12 sm:mt-16 animate-fade-up animate-delay-500">
             <CustomButton 
-              variant="outline" 
-              icon={<ArrowRight size={18} className="group-hover:translate-x-1 transition-transform duration-300" />} 
-              iconPosition="right"
               onClick={handleViewAllProperties}
-              className="text-base px-8 py-4 rounded-2xl font-semibold bg-gradient-to-r from-white to-royal-50 hover:from-gold-50 hover:to-white border-2 border-gold-200 hover:border-gold-300 text-royal-800 hover:text-royal-900 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
+            className="group px-8 py-4 bg-gradient-to-r from-royal-500 to-royal-700 text-white rounded-full shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 text-base font-semibold"
             >
-              <span className="flex items-center space-x-2">
-                <TrendingUp size={18} className="text-gold-500" />
-                <span>View All Properties</span>
+            <span className="flex items-center space-x-3">
+              <span>Explore All Listings</span>
+              <ArrowRight size={20} className="transition-transform duration-300 group-hover:translate-x-1" />
               </span>
             </CustomButton>
-            {/* Button glow effect */}
-            <div className="absolute inset-0 bg-gradient-to-r from-gold-400 to-gold-600 rounded-2xl opacity-0 group-hover:opacity-10 transition-opacity duration-300 blur-xl"></div>
-          </div>
         </div>
       </div>
     </section>

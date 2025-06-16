@@ -25,15 +25,23 @@ const PropertyList = () => {
   const [filteredProperties, setFilteredProperties] = useState<Property[]>([]);
   const [isLoading, setIsLoading] = useState(false);
 
-  // Fetch properties from database
+  // Fetch properties from database with server-side filtering
   useEffect(() => {
     const fetchProperties = async () => {
       setIsLoading(true);
       try {
-        const { data, error } = await supabase
+        let query = supabase
           .from('properties')
           .select('*')
           .order('created_at', { ascending: false });
+
+        if (searchTerm.trim()) {
+          query = query.or(
+            `title.ilike.%${searchTerm.trim()}%,location.ilike.%${searchTerm.trim()}%,type.ilike.%${searchTerm.trim()}%`
+          );
+        }
+
+        const { data, error } = await query;
 
         if (error) {
           console.error('Error fetching properties:', error);
@@ -41,7 +49,7 @@ const PropertyList = () => {
         }
 
         setProperties(data || []);
-        setFilteredProperties(data || []);
+        setFilteredProperties(data || []); // filteredProperties will now always be the result of the server filter
       } catch (error) {
         console.error('Error:', error);
       } finally {
@@ -50,26 +58,10 @@ const PropertyList = () => {
     };
 
     fetchProperties();
-  }, []);
-
-  // Filter properties based on search term
-  useEffect(() => {
-    if (!searchTerm.trim()) {
-      setFilteredProperties(properties);
-      return;
-    }
-
-    const filtered = properties.filter(property =>
-      property.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      property.location.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      property.type.toLowerCase().includes(searchTerm.toLowerCase())
-    );
-
-    setFilteredProperties(filtered);
-  }, [searchTerm, properties]);
+  }, [searchTerm]); // Re-fetch properties when searchTerm changes
 
   const handleSearch = () => {
-    // Search is handled automatically by the useEffect above
+    // Search is now handled by the useEffect that depends on searchTerm
     console.log('Searching for:', searchTerm);
   };
 
