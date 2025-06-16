@@ -202,12 +202,35 @@ const Navbar = () => {
   return (
     <header className={`fixed w-full z-[9999] transition-all duration-300 ${isScrolled ? 'bg-royal-800 shadow-lg py-4' : 'bg-royal-900 py-6'}`}>
       <div className="container mx-auto px-4 flex justify-between items-center">
-        <Link to="/" className="flex items-center transition-transform hover:scale-105">
-          <img 
-            src={logoSource} 
-            alt="Royal Group of Real Estates Logo" 
-            className="h-10 md:h-12"
-          />
+        <Link to="/" className="relative flex items-center space-x-1.5 group perspective transform hover:scale-[1.02] transition-all duration-500 ease-out
+          bg-gradient-to-br from-royal-800 via-royal-700 to-royal-900
+          px-2.5 py-0.5 rounded-[1.5rem] shadow-lg border border-royal-600
+          overflow-hidden animate-fade-in-up
+          before:content-[''] before:absolute before:inset-0 before:bg-white/5 before:mix-blend-overlay before:opacity-0 group-hover:before:opacity-100 before:transition-opacity before:duration-500
+          after:content-[''] after:absolute after:inset-0 after:bg-gradient-to-br after:from-gold-300/10 after:to-transparent after:opacity-0 group-hover:after:opacity-100 after:transition-opacity after:duration-500
+        ">
+          {/* Icon as a central emblem */}
+          <div className="relative w-7 h-7 flex items-center justify-center rounded-full 
+            bg-gradient-to-br from-gold-400 to-gold-600 shadow-inner-sm transform group-hover:scale-110 transition-transform duration-300 ease-out
+            before:content-[''] before:absolute before:inset-0 before:rounded-full before:border before:border-gold-300/50 before:opacity-0 group-hover:before:opacity-100 before:transition-opacity before:duration-300
+          ">
+            <Briefcase size={16} className="text-royal-900 drop-shadow-xs transition-colors duration-300" />
+          </div>
+
+          {/* Text elements */}
+          <div className="flex flex-col leading-none z-10 text-shadow-sm">
+            <span className="text-white text-xl md:text-2xl font-display tracking-tight drop-shadow-md 
+              bg-clip-text text-transparent bg-gradient-to-r from-gold-400 via-gold-500 to-gold-600 
+              group-hover:from-gold-300 group-hover:via-gold-400 group-hover:to-gold-500 transition-colors duration-300">
+              Royal Group
+            </span>
+            <span className="text-gold-300 dark:text-gold-400 text-[0.6rem] md:text-xs font-serif italic whitespace-nowrap -mt-0.5 opacity-90 tracking-wide drop-shadow-sm">
+              Since 2012
+            </span>
+          </div>
+          
+          {/* Border glow effect on hover */}
+          <div className="absolute inset-0 rounded-[1.5rem] border-2 border-transparent group-hover:border-gold-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none z-0"></div>
         </Link>
         
         <nav className={`hidden lg:flex space-x-8 text-white`}>

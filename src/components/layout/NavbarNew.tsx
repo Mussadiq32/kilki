@@ -244,6 +244,20 @@ const NavbarNew = () => {
               {isAuthenticated ? 'Dashboard' : 'Sign In'}
             </CustomButton>
           </a>
+
+          {/* New: Theme Toggle for Mobile */}
+          <div
+            className={cn(
+              "transform transition-all duration-300 ease-out",
+              isMobileMenuOpen ? "translate-x-0 opacity-100" : "-translate-x-full opacity-0"
+            )}
+            style={{ transitionDelay: `${(menuItems.length + serviceItems.length + toolItems.length + (isAuthenticated && isAdmin ? 1 : 0) + 1) * 50}ms` }}
+          >
+            <ThemeToggle 
+              iconOnly 
+              className="p-4 rounded-xl bg-white/90 dark:bg-black/90 backdrop-blur-sm border border-white/20 dark:border-gray-800/20 shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 flex items-center justify-center w-full"
+            />
+          </div>
         </div>
       </div>
     </header>
