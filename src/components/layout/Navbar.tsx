@@ -49,11 +49,11 @@ const MobileMenuItem = React.memo(({
     >
       <Link
         to={item.path}
-        className="flex items-center space-x-3 p-4 rounded-xl bg-white/90 dark:bg-royal-800/90 backdrop-blur-sm border border-white/20 dark:border-royal-600/20 shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 group"
+        className="flex items-center space-x-3 p-3 rounded-lg bg-white/90 dark:bg-royal-800/90 backdrop-blur-sm border border-white/20 dark:border-royal-600/20 shadow-md hover:shadow-lg hover:scale-[1.02] transition-all duration-300 group"
         onClick={onClick}
       >
-        {Icon && <Icon size={20} className="text-royal-600 dark:text-gold-400 group-hover:text-gold-500 transition-colors duration-300" />}
-        <span className="font-medium text-royal-800 dark:text-white group-hover:text-gold-500 transition-colors duration-300">
+        {Icon && <Icon size={18} className="text-royal-600 dark:text-gold-400 group-hover:text-gold-500 transition-colors duration-300" />}
+        <span className="font-medium text-sm text-royal-800 dark:text-white group-hover:text-gold-500 transition-colors duration-300">
           {item.name}
         </span>
       </Link>
@@ -83,10 +83,10 @@ const MobileServiceItem = React.memo(({
     >
       <Link
         to={item.path}
-        className="flex items-center space-x-3 p-4 rounded-xl bg-gradient-to-r from-gold-400/80 to-royal-500/80 backdrop-blur-sm border border-gold-300/30 dark:border-royal-400/30 shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 group"
+        className="flex items-center space-x-3 p-3 rounded-lg bg-gradient-to-r from-gold-400/80 to-royal-500/80 backdrop-blur-sm border border-gold-300/30 dark:border-royal-400/30 shadow-md hover:shadow-lg hover:scale-[1.02] transition-all duration-300 group"
         onClick={onClick}
       >
-        <span className="font-medium text-white group-hover:text-gold-200 transition-colors duration-300">
+        <span className="font-medium text-sm text-white group-hover:text-gold-200 transition-colors duration-300">
           {item.name}
         </span>
       </Link>
@@ -118,10 +118,10 @@ const MobileToolItem = React.memo(({
         href={item.href}
         target="_blank"
         rel="noopener noreferrer"
-        className="flex items-center space-x-3 p-4 rounded-xl bg-gradient-to-r from-royal-500/80 to-royal-600/80 backdrop-blur-sm border border-royal-400/30 shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 group"
+        className="flex items-center space-x-3 p-3 rounded-lg bg-gradient-to-r from-royal-500/80 to-royal-600/80 backdrop-blur-sm border border-royal-400/30 shadow-md hover:shadow-lg hover:scale-[1.02] transition-all duration-300 group"
         onClick={onClick}
       >
-        <span className="font-medium text-white group-hover:text-royal-200 transition-colors duration-300">
+        <span className="font-medium text-sm text-white group-hover:text-royal-200 transition-colors duration-300">
           {item.name}
         </span>
       </a>
@@ -355,7 +355,7 @@ const Navbar = () => {
           
           <Link to="/auth">
             <CustomButton 
-              variant={isScrolled ? "default" : "outline"} 
+              variant={isScrolled ? "primary" : "outline"} 
               size="lg"
               className={!isScrolled ? "border-white text-white hover:bg-white hover:text-royal-800 transition-transform hover:scale-105 px-6 py-3 text-lg font-bold" : "transition-transform hover:scale-105 px-6 py-3 text-lg font-bold"}
             >
@@ -365,16 +365,16 @@ const Navbar = () => {
           
           {/* OPTIMIZED HAMBURGER MENU */}
           <button 
-            className="lg:hidden flex items-center justify-center w-12 h-12 rounded-full bg-gold-500 shadow-xl text-white transition-all duration-300 hover:scale-110 hover:shadow-2xl focus:outline-none focus:ring-2 focus:ring-gold-300 focus:ring-offset-2"
+            className="lg:hidden flex items-center justify-center w-10 h-10 rounded-full bg-gold-500 shadow-lg text-white transition-all duration-300 hover:scale-110 hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-gold-300 focus:ring-offset-2"
             onClick={toggleMobileMenu}
             aria-label="Toggle mobile menu"
             aria-expanded={isMobileMenuOpen}
             aria-controls="mobile-menu"
           >
             {isMobileMenuOpen ? (
-              <X size={28} className="text-white" />
+              <X size={20} className="text-white" />
             ) : (
-              <Menu size={28} className="text-white" />
+              <Menu size={20} className="text-white" />
             )}
           </button>
         </div>
@@ -406,34 +406,34 @@ const Navbar = () => {
           isMobileMenuOpen ? "translate-x-0" : "translate-x-full"
         )}>
           {/* Header */}
-          <div className="flex items-center justify-between p-6 bg-royal-900 border-b border-royal-700">
+          <div className="flex items-center justify-between p-4 bg-royal-900 border-b border-royal-700">
             <div className="flex items-center space-x-3">
-              <div className="w-10 h-10 rounded-full bg-gold-500 flex items-center justify-center text-royal-900 font-bold">
+              <div className="w-8 h-8 rounded-full bg-gold-500 flex items-center justify-center text-royal-900 font-bold text-sm">
                 {user ? user.name?.charAt(0).toUpperCase() : 'G'}
               </div>
               <div>
-                <p className="font-bold text-white">
+                <p className="font-bold text-white text-sm">
                   {user ? user.name : 'Guest'}
                 </p>
-                <p className="text-sm text-gold-300">
+                <p className="text-xs text-gold-300">
                   {isAuthenticated ? 'Welcome back!' : 'Sign in to continue'}
                 </p>
               </div>
             </div>
             <button
               onClick={closeMobileMenu}
-              className="p-2 rounded-full bg-royal-700 hover:bg-royal-600 transition-colors duration-200"
+              className="p-1.5 rounded-full bg-royal-700 hover:bg-royal-600 transition-colors duration-200"
               aria-label="Close menu"
             >
-              <X size={24} className="text-gold-300" />
+              <X size={20} className="text-gold-300" />
             </button>
           </div>
 
           {/* Menu Content */}
-          <div className="flex-1 overflow-y-auto p-6 space-y-4">
+          <div className="flex-1 overflow-y-auto p-4 space-y-3">
             {/* Main Menu Items */}
-            <div className="space-y-3">
-              <h3 className="text-sm font-semibold text-gold-400 uppercase tracking-wider mb-4">
+            <div className="space-y-2">
+              <h3 className="text-xs font-semibold text-gold-400 uppercase tracking-wider mb-3">
                 Navigation
               </h3>
               {menuItems.map((item, index) => (
@@ -448,8 +448,8 @@ const Navbar = () => {
             </div>
 
             {/* Services */}
-            <div className="space-y-3">
-              <h3 className="text-sm font-semibold text-gold-400 uppercase tracking-wider mb-4">
+            <div className="space-y-2">
+              <h3 className="text-xs font-semibold text-gold-400 uppercase tracking-wider mb-3">
                 Services
               </h3>
               {serviceItems.map((item, index) => (
@@ -464,8 +464,8 @@ const Navbar = () => {
             </div>
 
             {/* Tools */}
-            <div className="space-y-3">
-              <h3 className="text-sm font-semibold text-gold-400 uppercase tracking-wider mb-4">
+            <div className="space-y-2">
+              <h3 className="text-xs font-semibold text-gold-400 uppercase tracking-wider mb-3">
                 Tools
               </h3>
               {toolItems.map((item, index) => (
@@ -481,8 +481,8 @@ const Navbar = () => {
 
             {/* Admin Panel */}
             {isAuthenticated && isAdmin && (
-              <div className="space-y-3">
-                <h3 className="text-sm font-semibold text-gold-400 uppercase tracking-wider mb-4">
+              <div className="space-y-2">
+                <h3 className="text-xs font-semibold text-gold-400 uppercase tracking-wider mb-3">
                   Admin
                 </h3>
                 <div
@@ -494,11 +494,11 @@ const Navbar = () => {
                 >
                   <Link
                     to="/admin"
-                    className="flex items-center space-x-3 p-4 rounded-xl bg-red-600 shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 group"
+                    className="flex items-center space-x-3 p-3 rounded-lg bg-red-600 shadow-md hover:shadow-lg hover:scale-[1.02] transition-all duration-300 group"
                     onClick={closeMobileMenu}
                   >
-                    <Settings size={24} className="text-white group-hover:text-red-100 transition-colors duration-300" />
-                    <span className="font-bold text-white group-hover:text-red-100 transition-colors duration-300">
+                    <Settings size={18} className="text-white group-hover:text-red-100 transition-colors duration-300" />
+                    <span className="font-bold text-sm text-white group-hover:text-red-100 transition-colors duration-300">
                       Admin Panel
                     </span>
                   </Link>
@@ -508,20 +508,20 @@ const Navbar = () => {
           </div>
 
           {/* Footer Actions */}
-          <div className="p-6 bg-royal-900 border-t border-royal-700">
-            <div className="flex space-x-3">
+          <div className="p-4 bg-royal-900 border-t border-royal-700">
+            <div className="flex space-x-2">
               <CustomButton 
                 variant="primary" 
-                className="flex-1 h-12 rounded-xl bg-gold-500 text-royal-900 font-bold shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300"
+                className="flex-1 h-10 rounded-lg bg-gold-500 text-royal-900 font-bold text-sm shadow-md hover:shadow-lg hover:scale-[1.02] transition-all duration-300"
                 onClick={closeMobileMenu}
               >
                 {isAuthenticated ? 'Dashboard' : 'Sign In'}
               </CustomButton>
               <a 
                 href="tel:7006064587" 
-                className="flex-1 flex items-center justify-center h-12 rounded-xl border-2 border-gold-500 text-gold-500 font-bold shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300"
+                className="flex-1 flex items-center justify-center h-10 rounded-lg border-2 border-gold-500 text-gold-500 font-bold text-sm shadow-md hover:shadow-lg hover:scale-[1.02] transition-all duration-300"
               >
-                <Phone size={24} className="mr-2" />
+                <Phone size={18} className="mr-1.5" />
                 Call Us
               </a>
             </div>
