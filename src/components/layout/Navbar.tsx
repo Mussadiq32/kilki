@@ -354,10 +354,14 @@ const Navbar = () => {
           <ThemeToggle iconOnly className="hidden md:block transition-transform hover:scale-110" />
           
           <Link to="/auth">
-            <CustomButton 
-              variant={isScrolled ? "primary" : "outline"} 
-              size="lg"
-              className={!isScrolled ? "border-white text-white hover:bg-white hover:text-royal-800 transition-transform hover:scale-105 px-6 py-3 text-lg font-bold" : "transition-transform hover:scale-105 px-6 py-3 text-lg font-bold"}
+            <CustomButton
+              variant={isScrolled ? "primary" : "outline"}
+              className={cn(
+                "transition-transform hover:scale-105",
+                "py-0.5 px-1.5 text-[0.6rem]",
+                "lg:py-2.5 lg:px-5 lg:text-lg",
+                !isScrolled ? "border-white text-white hover:bg-white hover:text-royal-800" : ""
+              )}
             >
               {isAuthenticated ? 'Dashboard' : 'Sign In'}
             </CustomButton>
