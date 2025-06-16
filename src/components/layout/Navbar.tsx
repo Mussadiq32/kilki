@@ -200,7 +200,7 @@ const Navbar = () => {
   }, [isScrolled]);
 
   return (
-    <header className={`fixed w-full z-[9999] transition-all duration-300 backdrop-blur-sm ${isScrolled ? 'bg-white/90 dark:bg-royal-900/90 shadow-lg py-4' : 'bg-transparent py-6'}`}>
+    <header className={`fixed w-full z-[9999] transition-all duration-300 ${isScrolled ? 'bg-royal-800 shadow-lg py-4' : 'bg-royal-900 py-6'}`}>
       <div className="container mx-auto px-4 flex justify-between items-center">
         <Link to="/" className="flex items-center transition-transform hover:scale-105">
           <img 
@@ -210,52 +210,52 @@ const Navbar = () => {
           />
         </Link>
         
-        <nav className={`hidden lg:flex space-x-8 ${isScrolled ? 'text-royal-800 dark:text-white' : 'text-white'}`}>
+        <nav className={`hidden lg:flex space-x-8 text-white`}>
           <Link 
             to="/" 
-            className="relative font-medium hover:text-gold-500 transition-all duration-300 hover:-translate-y-0.5"
+            className="relative text-lg font-bold hover:text-gold-300 transition-all duration-300 hover:-translate-y-0.5"
           >
             Home
           </Link>
           <Link 
             to="/properties" 
-            className="relative font-medium hover:text-gold-500 transition-all duration-300 hover:-translate-y-0.5"
+            className="relative text-lg font-bold hover:text-gold-300 transition-all duration-300 hover:-translate-y-0.5"
           >
             Properties
           </Link>
           <div className="relative group">
             <button 
               onClick={toggleDropdown}
-              className="flex items-center font-medium group-hover:text-gold-500 transition-all duration-300 hover:-translate-y-0.5"
+              className="flex items-center text-lg font-bold group-hover:text-gold-300 transition-all duration-300 hover:-translate-y-0.5"
               aria-expanded={isDropdownOpen}
               aria-haspopup="true"
             >
               Services
-              <ChevronDown size={16} className="ml-1 transition-transform duration-300 group-hover:rotate-180" />
+              <ChevronDown size={18} className="ml-1 transition-transform duration-300 group-hover:rotate-180" />
             </button>
             {isDropdownOpen && !isMobileMenuOpen && (
-              <div className="absolute top-full left-0 mt-2 w-48 bg-white/95 dark:bg-royal-900/95 backdrop-blur-sm rounded-lg shadow-xl py-2 z-[1000] animate-in fade-in-0 zoom-in-95 duration-200">
+              <div className="absolute top-full left-0 mt-2 w-48 bg-royal-800 rounded-lg shadow-xl py-2 z-[1000] animate-in fade-in-0 zoom-in-95 duration-200">
                 <Link 
                   to="/services/buying" 
-                  className="block px-4 py-2 text-royal-800 dark:text-white hover:bg-gold-50 dark:hover:bg-royal-800/50 hover:text-gold-500 transition-colors duration-300"
+                  className="block px-4 py-2 text-white hover:bg-gold-500 hover:text-royal-900 transition-colors duration-300"
                 >
                   Buying Property
                 </Link>
                 <Link 
                   to="/services/selling" 
-                  className="block px-4 py-2 text-royal-800 dark:text-white hover:bg-gold-50 dark:hover:bg-royal-800/50 hover:text-gold-500 transition-colors duration-300"
+                  className="block px-4 py-2 text-white hover:bg-gold-500 hover:text-royal-900 transition-colors duration-300"
                 >
                   Selling Property
                 </Link>
                 <Link 
                   to="/services/renting" 
-                  className="block px-4 py-2 text-royal-800 dark:text-white hover:bg-gold-50 dark:hover:bg-royal-800/50 hover:text-gold-500 transition-colors duration-300"
+                  className="block px-4 py-2 text-white hover:bg-gold-500 hover:text-royal-900 transition-colors duration-300"
                 >
                   Renting Property
                 </Link>
                 <Link 
                   to="/services/investment" 
-                  className="block px-4 py-2 text-royal-800 dark:text-white hover:bg-gold-50 dark:hover:bg-royal-800/50 hover:text-gold-500 transition-colors duration-300"
+                  className="block px-4 py-2 text-white hover:bg-gold-500 hover:text-royal-900 transition-colors duration-300"
                 >
                   Investment Advisory
                 </Link>
@@ -265,20 +265,20 @@ const Navbar = () => {
           <div className="relative group">
             <button 
               onClick={toggleToolsDropdown}
-              className="flex items-center font-medium group-hover:text-gold-500 transition-all duration-300 hover:-translate-y-0.5"
+              className="flex items-center text-lg font-bold group-hover:text-gold-300 transition-all duration-300 hover:-translate-y-0.5"
               aria-expanded={isToolsDropdownOpen}
               aria-haspopup="true"
             >
               Tools
-              <ChevronDown size={16} className="ml-1 transition-transform duration-300 group-hover:rotate-180" />
+              <ChevronDown size={18} className="ml-1 transition-transform duration-300 group-hover:rotate-180" />
             </button>
             {isToolsDropdownOpen && !isMobileMenuOpen && (
-              <div className="absolute top-full left-0 mt-2 w-48 bg-white/95 dark:bg-royal-900/95 backdrop-blur-sm rounded-lg shadow-xl py-2 z-[1000] animate-in fade-in-0 zoom-in-95 duration-200">
+              <div className="absolute top-full left-0 mt-2 w-48 bg-royal-800 rounded-lg shadow-xl py-2 z-[1000] animate-in fade-in-0 zoom-in-95 duration-200">
                 <a 
                   href="https://www.99acres.com/property-rates-and-price-trends-prffid"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="block px-4 py-2 text-royal-800 dark:text-white hover:bg-gold-50 dark:hover:bg-royal-800/50 hover:text-gold-500 transition-colors duration-300"
+                  className="block px-4 py-2 text-white hover:bg-gold-500 hover:text-royal-900 transition-colors duration-300"
                 >
                   Property Rates & Trends
                 </a>
@@ -286,7 +286,7 @@ const Navbar = () => {
                   href="https://www.99acres.com/real-estate-insights-irffid?referrer_section=SIDE_MENU"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="block px-4 py-2 text-royal-800 dark:text-white hover:bg-gold-50 dark:hover:bg-royal-800/50 hover:text-gold-500 transition-colors duration-300"
+                  className="block px-4 py-2 text-white hover:bg-gold-500 hover:text-royal-900 transition-colors duration-300"
                 >
                   Property News
                 </a>
@@ -295,13 +295,13 @@ const Navbar = () => {
           </div>
           <Link 
             to="/about" 
-            className="relative font-medium hover:text-gold-500 transition-all duration-300 hover:-translate-y-0.5"
+            className="relative text-lg font-bold hover:text-gold-300 transition-all duration-300 hover:-translate-y-0.5"
           >
             About Us
           </Link>
           <Link 
             to="/contact" 
-            className="relative font-medium hover:text-gold-500 transition-all duration-300 hover:-translate-y-0.5"
+            className="relative text-lg font-bold hover:text-gold-300 transition-all duration-300 hover:-translate-y-0.5"
           >
             Contact
           </Link>
@@ -309,7 +309,7 @@ const Navbar = () => {
           {isAuthenticated && isAdmin && (
             <Link 
               to="/admin" 
-              className="relative font-medium hover:text-gold-500 transition-all duration-300 hover:-translate-y-0.5"
+              className="relative text-lg font-bold hover:text-gold-300 transition-all duration-300 hover:-translate-y-0.5"
             >
               Admin
             </Link>
@@ -320,11 +320,11 @@ const Navbar = () => {
           <a 
             href="tel:7006064587" 
             className={cn(
-              "hidden md:flex items-center font-medium transition-all duration-300 hover:-translate-y-0.5",
-              isScrolled ? "text-royal-800 dark:text-white hover:text-gold-500" : "text-white hover:text-gold-300"
+              "hidden md:flex items-center text-lg font-bold transition-all duration-300 hover:-translate-y-0.5",
+              isScrolled ? "text-white hover:text-gold-300" : "text-white hover:text-gold-300"
             )}
           >
-            <Phone size={18} className="mr-2" />
+            <Phone size={20} className="mr-2" />
             Contact Us
           </a>
           
@@ -332,39 +332,27 @@ const Navbar = () => {
           
           <Link to="/auth">
             <CustomButton 
-              variant={isScrolled ? "primary" : "outline"} 
-              size="sm"
-              className={!isScrolled ? "border-white text-white hover:bg-white hover:text-royal-800 transition-transform hover:scale-105" : "transition-transform hover:scale-105"}
+              variant={isScrolled ? "default" : "outline"} 
+              size="lg"
+              className={!isScrolled ? "border-white text-white hover:bg-white hover:text-royal-800 transition-transform hover:scale-105 px-6 py-3 text-lg font-bold" : "transition-transform hover:scale-105 px-6 py-3 text-lg font-bold"}
             >
               {isAuthenticated ? 'Dashboard' : 'Sign In'}
             </CustomButton>
           </Link>
           
-          {/* OPTIMIZED HAMBURGER MENU BUTTON */}
+          {/* OPTIMIZED HAMBURGER MENU */}
           <button 
-            className="lg:hidden flex items-center justify-center w-11 h-11 rounded-xl bg-white/90 dark:bg-royal-800/90 backdrop-blur-sm shadow-lg text-gray-700 dark:text-white transition-all duration-300 hover:scale-105 hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-gold-300 focus:ring-offset-2"
+            className="lg:hidden flex items-center justify-center w-12 h-12 rounded-full bg-gold-500 shadow-xl text-white transition-all duration-300 hover:scale-110 hover:shadow-2xl focus:outline-none focus:ring-2 focus:ring-gold-300 focus:ring-offset-2"
             onClick={toggleMobileMenu}
             aria-label="Toggle mobile menu"
             aria-expanded={isMobileMenuOpen}
             aria-controls="mobile-menu"
           >
-            <div className="relative w-6 h-6">
-              {/* Top line */}
-              <span className={cn(
-                "absolute left-0 w-6 h-0.5 bg-current transition-all duration-300 ease-in-out",
-                isMobileMenuOpen ? "rotate-45 top-3" : "top-1"
-              )} />
-              {/* Middle line */}
-              <span className={cn(
-                "absolute left-0 w-6 h-0.5 bg-current transition-all duration-300 ease-in-out top-3",
-                isMobileMenuOpen ? "opacity-0 scale-0" : "opacity-100 scale-100"
-              )} />
-              {/* Bottom line */}
-              <span className={cn(
-                "absolute left-0 w-6 h-0.5 bg-current transition-all duration-300 ease-in-out",
-                isMobileMenuOpen ? "-rotate-45 top-3" : "top-5"
-              )} />
-            </div>
+            {isMobileMenuOpen ? (
+              <X size={28} className="text-white" />
+            ) : (
+              <Menu size={28} className="text-white" />
+            )}
           </button>
         </div>
       </div>
@@ -373,7 +361,7 @@ const Navbar = () => {
       <div 
         id="mobile-menu"
         className={cn(
-          "lg:hidden fixed inset-0 z-[9999] transition-all duration-300 ease-in-out",
+          "lg:hidden fixed inset-0 z-[9998] transition-all duration-300 ease-in-out",
           isMobileMenuOpen 
             ? "opacity-100 pointer-events-auto" 
             : "opacity-0 pointer-events-none"
@@ -384,37 +372,37 @@ const Navbar = () => {
       >
         {/* Backdrop */}
         <div 
-          className="absolute inset-0 bg-gradient-to-br from-royal-900/80 via-black/60 to-gold-900/40 backdrop-blur-xl transition-opacity duration-300"
+          className="absolute inset-0 bg-royal-900/90 backdrop-blur-xl transition-opacity duration-300"
           onClick={closeMobileMenu}
           aria-hidden="true"
         />
         
         {/* Menu Container */}
         <div className={cn(
-          "mobile-menu-container fixed inset-0 flex flex-col transition-all duration-300 ease-in-out",
+          "mobile-menu-container fixed inset-y-0 right-0 w-full max-w-sm bg-royal-800 shadow-2xl flex flex-col transition-transform duration-300 ease-in-out",
           isMobileMenuOpen ? "translate-x-0" : "translate-x-full"
         )}>
           {/* Header */}
-          <div className="flex items-center justify-between p-6 bg-white/95 dark:bg-royal-900/95 backdrop-blur-sm border-b border-white/20 dark:border-royal-600/20">
+          <div className="flex items-center justify-between p-6 bg-royal-900 border-b border-royal-700">
             <div className="flex items-center space-x-3">
-              <div className="w-10 h-10 rounded-full bg-gradient-to-br from-gold-400 to-royal-500 flex items-center justify-center text-white font-bold">
+              <div className="w-10 h-10 rounded-full bg-gold-500 flex items-center justify-center text-royal-900 font-bold">
                 {user ? user.name?.charAt(0).toUpperCase() : 'G'}
               </div>
               <div>
-                <p className="font-medium text-royal-800 dark:text-white">
+                <p className="font-bold text-white">
                   {user ? user.name : 'Guest'}
                 </p>
-                <p className="text-sm text-gray-600 dark:text-gray-400">
+                <p className="text-sm text-gold-300">
                   {isAuthenticated ? 'Welcome back!' : 'Sign in to continue'}
                 </p>
               </div>
             </div>
             <button
               onClick={closeMobileMenu}
-              className="p-2 rounded-lg bg-gray-100 dark:bg-royal-800 hover:bg-gray-200 dark:hover:bg-royal-700 transition-colors duration-200"
+              className="p-2 rounded-full bg-royal-700 hover:bg-royal-600 transition-colors duration-200"
               aria-label="Close menu"
             >
-              <X size={20} className="text-gray-600 dark:text-gray-300" />
+              <X size={24} className="text-gold-300" />
             </button>
           </div>
 
@@ -422,7 +410,7 @@ const Navbar = () => {
           <div className="flex-1 overflow-y-auto p-6 space-y-4">
             {/* Main Menu Items */}
             <div className="space-y-3">
-              <h3 className="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-4">
+              <h3 className="text-sm font-semibold text-gold-400 uppercase tracking-wider mb-4">
                 Navigation
               </h3>
               {menuItems.map((item, index) => (
@@ -438,7 +426,7 @@ const Navbar = () => {
 
             {/* Services */}
             <div className="space-y-3">
-              <h3 className="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-4">
+              <h3 className="text-sm font-semibold text-gold-400 uppercase tracking-wider mb-4">
                 Services
               </h3>
               {serviceItems.map((item, index) => (
@@ -454,7 +442,7 @@ const Navbar = () => {
 
             {/* Tools */}
             <div className="space-y-3">
-              <h3 className="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-4">
+              <h3 className="text-sm font-semibold text-gold-400 uppercase tracking-wider mb-4">
                 Tools
               </h3>
               {toolItems.map((item, index) => (
@@ -471,7 +459,7 @@ const Navbar = () => {
             {/* Admin Panel */}
             {isAuthenticated && isAdmin && (
               <div className="space-y-3">
-                <h3 className="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-4">
+                <h3 className="text-sm font-semibold text-gold-400 uppercase tracking-wider mb-4">
                   Admin
                 </h3>
                 <div
@@ -483,11 +471,11 @@ const Navbar = () => {
                 >
                   <Link
                     to="/admin"
-                    className="flex items-center space-x-3 p-4 rounded-xl bg-gradient-to-r from-red-500/80 to-red-600/80 backdrop-blur-sm border border-red-300/30 shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 group"
+                    className="flex items-center space-x-3 p-4 rounded-xl bg-red-600 shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 group"
                     onClick={closeMobileMenu}
                   >
-                    <Settings size={20} className="text-white group-hover:text-red-100 transition-colors duration-300" />
-                    <span className="font-medium text-white group-hover:text-red-100 transition-colors duration-300">
+                    <Settings size={24} className="text-white group-hover:text-red-100 transition-colors duration-300" />
+                    <span className="font-bold text-white group-hover:text-red-100 transition-colors duration-300">
                       Admin Panel
                     </span>
                   </Link>
@@ -497,22 +485,21 @@ const Navbar = () => {
           </div>
 
           {/* Footer Actions */}
-          <div className="p-6 bg-white/95 dark:bg-royal-900/95 backdrop-blur-sm border-t border-white/20 dark:border-royal-600/20">
+          <div className="p-6 bg-royal-900 border-t border-royal-700">
             <div className="flex space-x-3">
               <CustomButton 
                 variant="primary" 
-                className="flex-1 h-12 rounded-xl bg-gradient-to-r from-gold-400 to-gold-600 text-white font-bold shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300"
+                className="flex-1 h-12 rounded-xl bg-gold-500 text-royal-900 font-bold shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300"
                 onClick={closeMobileMenu}
               >
                 {isAuthenticated ? 'Dashboard' : 'Sign In'}
               </CustomButton>
               <a 
                 href="tel:7006064587" 
-                className="flex items-center justify-center w-12 h-12 rounded-xl bg-gradient-to-r from-royal-500 to-royal-700 text-white font-bold shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300"
-                onClick={closeMobileMenu}
-                aria-label="Call us"
+                className="flex-1 flex items-center justify-center h-12 rounded-xl border-2 border-gold-500 text-gold-500 font-bold shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300"
               >
-                <Phone size={20} />
+                <Phone size={24} className="mr-2" />
+                Call Us
               </a>
             </div>
           </div>
