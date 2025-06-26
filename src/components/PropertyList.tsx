@@ -106,7 +106,7 @@ const PropertyList = () => {
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredProperties.map((property) => (
+          {filteredProperties.map((property, idx) => (
             <PropertyCard
               key={property.id}
               id={property.id}
@@ -119,6 +119,7 @@ const PropertyList = () => {
               image={property.image || 'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=800'}
               featured={property.featured}
               type={property.type}
+              priority={idx < 4}
             />
           ))}
         </div>

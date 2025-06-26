@@ -131,7 +131,7 @@ const ServicesSection = () => {
       <div className="absolute top-40 right-20 w-16 h-16 bg-gradient-to-br from-royal-200 to-royal-300 rounded-full opacity-20 animate-pulse delay-1000" />
       <div className="absolute bottom-20 left-1/4 w-12 h-12 bg-gradient-to-br from-gold-300 to-gold-400 rounded-full opacity-20 animate-pulse delay-2000" />
       
-      <div className="container mx-auto relative">
+      <div className="container mx-auto relative px-2 sm:px-4 md:px-8">
         {/* Header Section */}
         <div className="text-center max-w-4xl mx-auto mb-20">
           <div className="inline-flex items-center px-4 py-2 bg-gradient-to-r from-gold-100 to-gold-200 text-gold-700 text-sm font-semibold rounded-full mb-6 animate-fade-up shadow-lg">

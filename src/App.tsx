@@ -3,6 +3,7 @@ import { Suspense, lazy } from 'react';
 import { Toaster } from '@/components/ui/toaster';
 import { AuthProvider } from '@/contexts/AuthContext';
 import { ThemeProvider } from '@/contexts/ThemeContext';
+import RoyalLoader from '@/components/ui/RoyalLoader';
 
 // Lazy load components for better performance
 const Index = lazy(() => import('@/pages/Index'));
@@ -19,21 +20,14 @@ const PropertyDetails = lazy(() => import('@/pages/PropertyDetails'));
 const NotFound = lazy(() => import('@/pages/NotFound'));
 
 // Loading component
-const LoadingSpinner = () => (
-  <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-royal-50 to-blue-50">
-    <div className="flex flex-col items-center space-y-4">
-      <div className="w-12 h-12 border-4 border-royal-200 border-t-gold-500 rounded-full animate-spin"></div>
-      <p className="text-royal-600 font-medium">Loading...</p>
-    </div>
-  </div>
-);
+// const LoadingSpinner = ... (remove this)
 
 function App() {
   return (
     <ThemeProvider>
       <AuthProvider>
         <Router>
-          <Suspense fallback={<LoadingSpinner />}>
+          <Suspense fallback={<RoyalLoader fullPage />}>
             <Routes>
               <Route path="/" element={<Index />} />
               <Route path="/auth" element={<Auth />} />

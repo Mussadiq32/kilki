@@ -83,7 +83,7 @@ const FeaturedProperties = () => {
     <section className="py-16 sm:py-20 lg:py-24 bg-gradient-to-br from-royal-50 to-gold-50 overflow-hidden relative">
       <div className="absolute inset-0 bg-pattern-light opacity-50 z-0"></div>
 
-      <div className="container mx-auto relative z-10">
+      <div className="container mx-auto relative z-10 px-2 sm:px-4 md:px-8">
         {/* Enhanced Header Section */}
         <div className="flex flex-col lg:flex-row lg:items-end justify-between mb-12 sm:mb-16">
           <div className="max-w-3xl">

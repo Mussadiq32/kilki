@@ -2,6 +2,7 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react-swc";
 import path from "path";
 import { visualizer } from "rollup-plugin-visualizer";
+import viteImagemin from "vite-plugin-imagemin";
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => ({
@@ -14,6 +15,37 @@ export default defineConfig(({ mode }) => ({
   },
   plugins: [
     react(),
+    viteImagemin({
+      filter: /\.(jpe?g|png|gif|tiff|webp|svg)$/i,
+      verbose: true,
+      webp: {
+        quality: 80,
+        method: 6,
+      },
+      mozjpeg: {
+        quality: 80,
+        progressive: true,
+      },
+      pngquant: {
+        quality: [0.65, 0.8],
+        speed: 4,
+      },
+      gifsicle: {
+        optimizationLevel: 3,
+      },
+      svgo: {
+        plugins: [
+          {
+            name: 'preset-default',
+            params: {
+              overrides: {
+                removeViewBox: false,
+              },
+            },
+          },
+        ],
+      },
+    }),
     mode === "production" && visualizer({
       open: true,
       filename: "bundle-analyzer.html",

@@ -136,7 +136,7 @@ const AboutSection = () => {
       <div className="absolute top-40 right-20 w-16 h-16 bg-gradient-to-br from-royal-200 to-royal-300 rounded-full opacity-20 animate-pulse delay-1000" />
       <div className="absolute bottom-20 left-1/4 w-12 h-12 bg-gradient-to-br from-gold-300 to-gold-400 rounded-full opacity-20 animate-pulse delay-2000" />
       
-      <div className="container mx-auto relative">
+      <div className="container mx-auto relative px-2 sm:px-4 md:px-8">
         {/* Enhanced Section Header */}
         <motion.div 
           className="text-center mb-12 lg:mb-20 max-w-4xl mx-auto"
@@ -154,7 +154,7 @@ const AboutSection = () => {
             Building <span className="text-gradient bg-gradient-to-r from-gold-600 to-gold-800 bg-clip-text text-transparent">Excellence</span> in Real Estate Since 2012
           </h2>
           <p className="text-royal-600 text-sm lg:text-lg leading-relaxed">
-            Royal Group of Real Estate has established itself as a premier real estate developer across India's most vibrant cities. With a legacy of excellence and innovation, we've been transforming skylines and creating inspiring spaces.
+            Royal Group of Real Estates has established itself as a premier real estate developer across India's most vibrant cities. With a legacy of excellence and innovation, we've been transforming skylines and creating inspiring spaces.
           </p>
         </motion.div>
 

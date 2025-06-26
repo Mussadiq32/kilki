@@ -7,6 +7,7 @@ import { supabase } from '@/lib/supabase';
 import { Skeleton } from '@/components/ui/skeleton';
 import CustomButton from '@/components/ui/CustomButton';
 import WhatsAppButton from '@/components/ui/WhatsAppButton';
+import PropertyReviews from '@/components/PropertyReviews';
 
 interface Property {
   id: string;
@@ -291,6 +292,10 @@ const PropertyDetails = () => {
                 </CustomButton>
               </div>
             </div>
+          </div>
+          {/* Property Reviews Section */}
+          <div className="mt-16">
+            <PropertyReviews propertyId={Number(property.id)} propertyTitle={property.title} />
           </div>
         </div>
       </main>

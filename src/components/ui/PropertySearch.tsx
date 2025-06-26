@@ -135,7 +135,7 @@ const PropertySearch = ({
           onChange={(e) => onChange(e.target.value)}
           onFocus={() => setIsFocused(true)}
           onKeyDown={handleKeyDown}
-          className="w-full pl-10 pr-8 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-gold-500"
+          className="w-full pl-9 pr-7 py-2 sm:py-2.5 md:py-3 text-sm sm:text-base rounded-md sm:rounded-lg border focus:outline-none focus:ring-2 focus:ring-gold-500"
         />
         {value && (
           <button 
@@ -152,7 +152,7 @@ const PropertySearch = ({
       {isFocused && (isLoading || error || suggestions.length > 0) && (
         <div 
           ref={suggestionsRef}
-          className="absolute z-10 w-full mt-1 bg-white border border-gray-200 rounded-lg shadow-lg max-h-60 overflow-y-auto"
+          className="absolute z-10 w-full mt-1 bg-white border border-gray-200 rounded-md sm:rounded-lg shadow-lg max-h-52 sm:max-h-60 overflow-y-auto text-sm sm:text-base"
         >
           {isLoading && (
             <div className="px-4 py-3 text-royal-600 text-sm">

@@ -36,7 +36,7 @@ const PremiumProperties = () => {
 
   return (
     <section id="premium" className="section-padding bg-royal-50/50">
-      <div className="container mx-auto">
+      <div className="container mx-auto px-2 sm:px-4 md:px-8">
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-12">
           <div className="max-w-2xl">
             <h2 className="heading-lg text-royal-800 mb-4 animate-fade-up">

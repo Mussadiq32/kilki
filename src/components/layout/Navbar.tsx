@@ -200,40 +200,37 @@ const Navbar = () => {
   }, [isScrolled]);
 
   return (
-    <header className={`fixed w-full z-[9999] transition-all duration-300 ${isScrolled ? 'bg-royal-800 shadow-lg py-4' : 'bg-royal-900 py-6'}`}>
-      <div className="container mx-auto px-4 flex justify-between items-center">
-        <Link to="/" className="relative flex items-center space-x-1.5 group perspective transform hover:scale-[1.02] transition-all duration-500 ease-out
+    <header className={`fixed w-full z-[9999] transition-all duration-300 ${isScrolled ? 'bg-royal-800 shadow-lg py-3 sm:py-4' : 'bg-royal-900 py-4 sm:py-6'}`}>
+      <div className="container mx-auto px-2 sm:px-4 flex justify-between items-center min-h-[56px] sm:min-h-[72px]">
+        <Link to="/" className="relative flex items-center space-x-1 sm:space-x-1.5 group perspective transform hover:scale-[1.02] transition-all duration-500 ease-out
           bg-gradient-to-br from-royal-800 via-royal-700 to-royal-900
-          px-2.5 py-0.5 rounded-[1.5rem] shadow-lg border border-royal-600
+          px-2 py-0.5 sm:px-2.5 rounded-[1.5rem] shadow-lg border border-royal-600
           overflow-hidden animate-fade-in-up
           before:content-[''] before:absolute before:inset-0 before:bg-white/5 before:mix-blend-overlay before:opacity-0 group-hover:before:opacity-100 before:transition-opacity before:duration-500
           after:content-[''] after:absolute after:inset-0 after:bg-gradient-to-br after:from-gold-300/10 after:to-transparent after:opacity-0 group-hover:after:opacity-100 after:transition-opacity after:duration-500
         ">
           {/* Icon as a central emblem */}
-          <div className="relative w-7 h-7 flex items-center justify-center rounded-full 
+          <div className="relative w-6 h-6 sm:w-7 sm:h-7 flex items-center justify-center rounded-full 
             bg-gradient-to-br from-gold-400 to-gold-600 shadow-inner-sm transform group-hover:scale-110 transition-transform duration-300 ease-out
             before:content-[''] before:absolute before:inset-0 before:rounded-full before:border before:border-gold-300/50 before:opacity-0 group-hover:before:opacity-100 before:transition-opacity before:duration-300
           ">
-            <Briefcase size={16} className="text-royal-900 drop-shadow-xs transition-colors duration-300" />
+            <Briefcase size={14} className="text-royal-900 drop-shadow-xs transition-colors duration-300" />
           </div>
-
           {/* Text elements */}
           <div className="flex flex-col leading-none z-10 text-shadow-sm">
-            <span className="text-white text-xl md:text-2xl font-display tracking-tight drop-shadow-md 
+            <span className="text-white text-lg sm:text-xl md:text-2xl font-display tracking-tight drop-shadow-md 
               bg-clip-text text-transparent bg-gradient-to-r from-gold-400 via-gold-500 to-gold-600 
               group-hover:from-gold-300 group-hover:via-gold-400 group-hover:to-gold-500 transition-colors duration-300">
               Royal Group
             </span>
-            <span className="text-gold-300 dark:text-gold-400 text-[0.6rem] md:text-xs font-serif italic whitespace-nowrap -mt-0.5 opacity-90 tracking-wide drop-shadow-sm">
+            <span className="text-gold-300 dark:text-gold-400 text-[0.55rem] sm:text-[0.6rem] md:text-xs font-serif italic whitespace-nowrap -mt-0.5 opacity-90 tracking-wide drop-shadow-sm">
               Since 2012
             </span>
           </div>
-          
           {/* Border glow effect on hover */}
           <div className="absolute inset-0 rounded-[1.5rem] border-2 border-transparent group-hover:border-gold-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none z-0"></div>
         </Link>
-        
-        <nav className={`hidden lg:flex space-x-8 text-white`}>
+        <nav className={`hidden lg:flex space-x-4 xl:space-x-8 text-white`}>
           <Link 
             to="/" 
             className="relative text-lg font-bold hover:text-gold-300 transition-all duration-300 hover:-translate-y-0.5"
@@ -339,46 +336,42 @@ const Navbar = () => {
           )}
         </nav>
         
-        <div className="flex items-center space-x-4">
+        <div className="flex items-center space-x-2 sm:space-x-4">
           <a 
             href="tel:7006064587" 
             className={cn(
-              "hidden md:flex items-center text-lg font-bold transition-all duration-300 hover:-translate-y-0.5",
+              "hidden md:flex items-center text-base sm:text-lg font-bold transition-all duration-300 hover:-translate-y-0.5",
               isScrolled ? "text-white hover:text-gold-300" : "text-white hover:text-gold-300"
             )}
           >
-            <Phone size={20} className="mr-2" />
-            Contact Us
+            <Phone size={18} className="mr-1.5 sm:mr-2" />
+            <span className="hidden xs:inline">Contact Us</span>
           </a>
-          
           <ThemeToggle iconOnly className="hidden md:block transition-transform hover:scale-110" />
-          
           <Link to="/auth">
             <CustomButton
               variant={isScrolled ? "primary" : "outline"}
               className={cn(
                 "transition-transform hover:scale-105",
-                "py-0.5 px-1.5 text-[0.6rem]",
-                "lg:py-2.5 lg:px-5 lg:text-lg",
+                "py-0.5 px-1 text-[0.6rem] sm:py-0.5 sm:px-1.5 sm:text-xs md:py-2.5 md:px-5 md:text-lg",
                 !isScrolled ? "border-white text-white hover:bg-white hover:text-royal-800" : ""
               )}
             >
               {isAuthenticated ? 'Dashboard' : 'Sign In'}
             </CustomButton>
           </Link>
-          
           {/* OPTIMIZED HAMBURGER MENU */}
           <button 
-            className="lg:hidden flex items-center justify-center w-10 h-10 rounded-full bg-gold-500 shadow-lg text-white transition-all duration-300 hover:scale-110 hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-gold-300 focus:ring-offset-2"
+            className="lg:hidden flex items-center justify-center w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-gold-500 shadow-lg text-white transition-all duration-300 hover:scale-110 hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-gold-300 focus:ring-offset-2"
             onClick={toggleMobileMenu}
             aria-label="Toggle mobile menu"
             aria-expanded={isMobileMenuOpen}
             aria-controls="mobile-menu"
           >
             {isMobileMenuOpen ? (
-              <X size={20} className="text-white" />
+              <X size={18} className="text-white" />
             ) : (
-              <Menu size={20} className="text-white" />
+              <Menu size={18} className="text-white" />
             )}
           </button>
         </div>
@@ -406,35 +399,35 @@ const Navbar = () => {
         
         {/* Menu Container */}
         <div className={cn(
-          "mobile-menu-container fixed inset-y-0 right-0 w-full max-w-sm bg-royal-800 shadow-2xl flex flex-col transition-transform duration-300 ease-in-out",
+          "mobile-menu-container fixed inset-y-0 right-0 w-full max-w-xs sm:max-w-sm bg-royal-800 shadow-2xl flex flex-col transition-transform duration-300 ease-in-out",
           isMobileMenuOpen ? "translate-x-0" : "translate-x-full"
         )}>
           {/* Header */}
-          <div className="flex items-center justify-between p-4 bg-royal-900 border-b border-royal-700">
-            <div className="flex items-center space-x-3">
-              <div className="w-8 h-8 rounded-full bg-gold-500 flex items-center justify-center text-royal-900 font-bold text-sm">
+          <div className="flex items-center justify-between p-3 sm:p-4 bg-royal-900 border-b border-royal-700">
+            <div className="flex items-center space-x-2 sm:space-x-3">
+              <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-gold-500 flex items-center justify-center text-royal-900 font-bold text-xs sm:text-sm">
                 {user ? user.name?.charAt(0).toUpperCase() : 'G'}
               </div>
               <div>
-                <p className="font-bold text-white text-sm">
+                <p className="font-bold text-white text-xs sm:text-sm">
                   {user ? user.name : 'Guest'}
                 </p>
-                <p className="text-xs text-gold-300">
+                <p className="text-[0.6rem] sm:text-xs text-gold-300">
                   {isAuthenticated ? 'Welcome back!' : 'Sign in to continue'}
                 </p>
               </div>
             </div>
             <button
               onClick={closeMobileMenu}
-              className="p-1.5 rounded-full bg-royal-700 hover:bg-royal-600 transition-colors duration-200"
+              className="p-1 rounded-full bg-royal-700 hover:bg-royal-600 transition-colors duration-200"
               aria-label="Close menu"
             >
-              <X size={20} className="text-gold-300" />
+              <X size={18} className="text-gold-300" />
             </button>
           </div>
 
           {/* Menu Content */}
-          <div className="flex-1 overflow-y-auto p-4 space-y-3">
+          <div className="flex-1 overflow-y-auto p-3 sm:p-4 space-y-3">
             {/* Main Menu Items */}
             <div className="space-y-2">
               <h3 className="text-xs font-semibold text-gold-400 uppercase tracking-wider mb-3">
@@ -512,21 +505,21 @@ const Navbar = () => {
           </div>
 
           {/* Footer Actions */}
-          <div className="p-4 bg-royal-900 border-t border-royal-700">
+          <div className="p-3 sm:p-4 bg-royal-900 border-t border-royal-700">
             <div className="flex space-x-2">
               <CustomButton 
                 variant="primary" 
-                className="flex-1 h-10 rounded-lg bg-gold-500 text-royal-900 font-bold text-sm shadow-md hover:shadow-lg hover:scale-[1.02] transition-all duration-300"
+                className="flex-1 h-9 sm:h-10 rounded-lg bg-gold-500 text-royal-900 font-bold text-xs sm:text-sm shadow-md hover:shadow-lg hover:scale-[1.02] transition-all duration-300"
                 onClick={closeMobileMenu}
               >
                 {isAuthenticated ? 'Dashboard' : 'Sign In'}
               </CustomButton>
               <a 
                 href="tel:7006064587" 
-                className="flex-1 flex items-center justify-center h-10 rounded-lg border-2 border-gold-500 text-gold-500 font-bold text-sm shadow-md hover:shadow-lg hover:scale-[1.02] transition-all duration-300"
+                className="flex-1 flex items-center justify-center h-9 sm:h-10 rounded-lg border-2 border-gold-500 text-gold-500 font-bold text-xs sm:text-sm shadow-md hover:shadow-lg hover:scale-[1.02] transition-all duration-300"
               >
-                <Phone size={18} className="mr-1.5" />
-                Call Us
+                <Phone size={16} className="mr-1" />
+                <span className="hidden xs:inline">Call Us</span>
               </a>
             </div>
           </div>

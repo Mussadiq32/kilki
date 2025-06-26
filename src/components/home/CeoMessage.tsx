@@ -22,73 +22,9 @@ const CeoMessage = () => {
       <div className="absolute top-40 right-20 w-16 h-16 bg-gradient-to-br from-royal-200 to-royal-300 rounded-full opacity-20 animate-pulse delay-1000" />
       <div className="absolute bottom-20 left-1/4 w-12 h-12 bg-gradient-to-br from-gold-300 to-gold-400 rounded-full opacity-20 animate-pulse delay-2000" />
       
-      <div className="container mx-auto relative">
+      <div className="container mx-auto relative px-2 sm:px-4 md:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center">
-          {/* Enhanced Image Section */}
-          <motion.div 
-            className="order-2 lg:order-1"
-            initial={{ opacity: 0, x: -50 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
-          >
-            <div className="relative mx-auto max-w-sm lg:max-w-lg">
-              {/* Main Image Container */}
-              <div className="relative overflow-hidden rounded-xl lg:rounded-2xl shadow-xl lg:shadow-2xl border-2 lg:border-4 border-gold-200">
-                {/* Gradient Overlay */}
-                <div className="absolute inset-0 bg-gradient-to-t from-royal-900/20 via-transparent to-transparent z-10" />
-                
-                {/* Floating Elements */}
-                <div className="absolute top-2 lg:top-4 right-2 lg:right-4 z-20">
-                  <div className="w-6 h-6 lg:w-8 lg:h-8 bg-gradient-to-r from-gold-400 to-gold-600 rounded-full flex items-center justify-center shadow-lg">
-                    <Crown size={12} className="lg:w-4 lg:h-4 text-white" />
-                  </div>
-                </div>
-                
-                <div className="absolute bottom-2 lg:bottom-4 left-2 lg:left-4 z-20">
-                  <div className="w-5 h-5 lg:w-6 lg:h-6 bg-gradient-to-r from-royal-400 to-royal-600 rounded-full flex items-center justify-center shadow-lg">
-                    <Star size={10} className="lg:w-3 lg:h-3 text-white" />
-                  </div>
-                </div>
-                
-                <img 
-                  src="https://iili.io/3KL17mN.jpg" 
-                  alt="Basit Mashkor Wani - CEO" 
-                  className="w-full h-full object-cover transform hover:scale-105 transition-transform duration-700"
-                />
-              </div>
-              
-              {/* Achievement Stats */}
-              <div className="grid grid-cols-2 gap-3 lg:gap-4 mt-6 lg:mt-8">
-                {achievements.map((achievement, index) => (
-                  <motion.div 
-                    key={index}
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6, delay: index * 0.1 }}
-                    viewport={{ once: true }}
-                    className="bg-white rounded-lg lg:rounded-xl p-3 lg:p-4 shadow-lg border border-gray-100 hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
-                  >
-                    <div className={cn(
-                      "w-8 h-8 lg:w-12 lg:h-12 rounded-lg flex items-center justify-center mb-2 lg:mb-3 mx-auto",
-                      "bg-gradient-to-r shadow-lg",
-                      achievement.color
-                    )}>
-                      <div className="text-white">
-                        {achievement.icon}
-                      </div>
-                    </div>
-                    <div className="text-center">
-                      <div className="text-lg lg:text-2xl font-bold text-royal-800 mb-1">{achievement.value}</div>
-                      <div className="text-xs lg:text-sm text-royal-600 font-medium">{achievement.label}</div>
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
-            </div>
-          </motion.div>
-          
-          {/* Enhanced Message Section */}
+          {/* Enhanced Message Section Only (remove image section) */}
           <motion.div 
             className="order-1 lg:order-2"
             initial={{ opacity: 0, x: 50 }}

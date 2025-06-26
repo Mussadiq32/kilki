@@ -162,7 +162,7 @@ const TestimonialsSection = () => {
         <Zap size={40} />
       </div>
       
-      <div className="container mx-auto">
+      <div className="container mx-auto px-2 sm:px-4 md:px-8">
         <div className="text-center max-w-3xl mx-auto mb-12 lg:mb-16">
           <motion.div 
             className="inline-block px-3 lg:px-4 py-2 bg-gradient-to-r from-gold-400 to-gold-600 text-white text-xs lg:text-sm font-medium rounded-full mb-4 shadow-lg"

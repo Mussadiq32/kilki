@@ -88,7 +88,7 @@ const ContactSection = () => {
 
   return (
     <section id="contact" className="section-padding bg-royal-50/50">
-      <div className="container mx-auto">
+      <div className="container mx-auto px-2 sm:px-4 md:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           {/* Left Column - Form */}
           <div className="animate-fade-right backdrop-blur-sm bg-white/50 p-8 rounded-2xl shadow-lg border border-royal-100/20">

@@ -184,7 +184,7 @@ const Footer = () => {
   };
 
   return (
-    <footer className="bg-gradient-to-br from-royal-900 via-royal-800 to-royal-900 text-white relative overflow-hidden backdrop-blur-md py-12 sm:py-16 lg:py-20">
+    <footer className="bg-royal-900 text-white pt-10 pb-6 px-2 sm:px-4 md:px-8">
       <div className="absolute inset-0 bg-[linear-gradient(45deg,#1f2937_1px,transparent_1px)] bg-[size:2rem_2rem] opacity-5" />
       <motion.div 
         className="container mx-auto relative z-10"

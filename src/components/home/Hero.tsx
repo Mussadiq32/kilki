@@ -26,9 +26,12 @@ import PropertySearch from '../ui/PropertySearch';
 import VideoModal from '../ui/VideoModal';
 import { cn } from '@/lib/utils';
 import { motion, AnimatePresence } from 'framer-motion';
+import RoyalLoader from "@/components/ui/RoyalLoader";
+import { useToast } from '@/hooks/use-toast';
 
 const Hero = () => {
   const navigate = useNavigate();
+  const { toast } = useToast();
   const [activeTab, setActiveTab] = useState<'buy' | 'rent' | 'sell'>('buy');
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
@@ -194,7 +197,7 @@ const Hero = () => {
         </div>
 
         {/* Main Content */}
-        <div className="container mx-auto relative z-10 px-4 sm:px-6 md:px-12 lg:px-24 py-8 sm:py-16">
+        <div className="container mx-auto relative z-10 px-2 sm:px-4 md:px-8 lg:px-24 py-8 sm:py-12 md:py-16 flex flex-col items-center justify-center min-h-[60vh]">
           <div className="max-w-6xl mx-auto">
             {/* Hero Content */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
@@ -227,7 +230,7 @@ const Hero = () => {
                   transition={{ duration: 0.6, delay: 0.6 }}
                   className="text-white/80 text-lg sm:text-xl md:text-2xl leading-relaxed max-w-2xl"
                 >
-                  Discover premium properties across major Indian cities with Royal Group of Real Estate, 
+                  Discover premium properties across major Indian cities with Royal Group of Real Estates, 
                   your trusted partner in real estate excellence.
                 </motion.p>
 
@@ -311,7 +314,13 @@ const Hero = () => {
                     ? `bg-gradient-to-r ${tab.color} text-white shadow-lg` 
                             : "text-gray-600 hover:text-gray-800 hover:bg-white/50"
                 )}
-                onClick={() => setActiveTab(tab.key as 'buy' | 'rent' | 'sell')}
+                onClick={() => {
+                  if (tab.key === 'buy') {
+                    setActiveTab('buy');
+                  } else {
+                    toast({ title: 'Coming soon!', description: `${tab.label} feature is coming soon.` });
+                  }
+                }}
               >
                         <span className="mr-2">{tab.icon}</span>
                 {tab.label}

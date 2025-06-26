@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Heart, Home, MapPin, Square, BadgeIndianRupee, Sparkles, Crown, Star, Building2, ShowerHead, Maximize } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { supabase } from '@/lib/supabase';
+import { PropertyCardImage } from './PropertyImage';
 
 interface PropertyCardProps {
   id: string;
@@ -15,6 +16,7 @@ interface PropertyCardProps {
   className?: string;
   featured?: boolean;
   type?: 'residential' | 'commercial';
+  priority?: boolean;
 }
 
 const PropertyCard = ({
@@ -28,10 +30,10 @@ const PropertyCard = ({
   image,
   className,
   featured = false,
-  type = 'residential'
+  type = 'residential',
+  priority = false
 }: PropertyCardProps) => {
   const [isLiked, setIsLiked] = useState(false);
-  const [imageLoaded, setImageLoaded] = useState(false);
   const [primaryImage, setPrimaryImage] = useState(image);
 
   useEffect(() => {
@@ -83,7 +85,7 @@ const PropertyCard = ({
   return (
     <div 
       className={cn(
-        "group relative rounded-3xl overflow-hidden bg-white/95 backdrop-blur-md property-card-shadow-modern h-full border border-gray-100/50 hover:border-gold-300/70 transition-all duration-500 hover:shadow-3xl hover:shadow-gold-500/15 hover:-translate-y-2",
+        "group relative rounded-2xl sm:rounded-3xl overflow-hidden bg-white/95 backdrop-blur-md property-card-shadow-modern h-full border border-gray-100/50 hover:border-gold-300/70 transition-all duration-500 hover:shadow-3xl hover:shadow-gold-500/15 hover:-translate-y-2",
         featured ? "ring-3 ring-gold-300/70" : "",
         className
       )}
@@ -92,21 +94,13 @@ const PropertyCard = ({
       <div className="absolute inset-0 bg-gradient-to-br from-gold-50/70 via-white to-royal-50/50 opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
       
       <div className="relative">
-        {/* Modern Image Section */}
-        <div className="relative w-full aspect-[4/3] overflow-hidden rounded-t-3xl bg-gray-50">
-          {/* Image placeholder/skeleton */}
-          <div className={cn(
-            "absolute inset-0 bg-gradient-to-br from-gray-100 to-gray-200 animate-pulse",
-            imageLoaded ? "opacity-0" : "opacity-100"
-          )} />
-          <img
+        {/* Modern Image Section with optimized loading */}
+        <div className="relative w-full aspect-[4/3] sm:aspect-[4/3] md:aspect-[16/9] overflow-hidden rounded-t-2xl sm:rounded-t-3xl bg-gray-50">
+          <PropertyCardImage
             src={displayImage}
             alt={title}
-            onLoad={() => setImageLoaded(true)}
-            className={cn(
-              "w-full h-full object-cover transition-transform duration-700 group-hover:scale-105",
-              imageLoaded ? "opacity-100" : "opacity-0"
-            )}
+            className="transition-transform duration-700 group-hover:scale-105"
+            priority={priority}
           />
           
           {/* Modern Like Button */}
@@ -146,60 +140,60 @@ const PropertyCard = ({
         </div>
         
         {/* Modern Content Section */}
-        <div className="p-7 relative">
+        <div className="p-4 sm:p-7 relative">
           {/* Title with modern styling */}
-          <div className="flex justify-between items-start mb-3">
-            <h3 className="font-display text-2xl font-bold text-gray-800 line-clamp-2 group-hover:text-gray-900 transition-colors duration-300">{title}</h3>
+          <div className="flex justify-between items-start mb-2 sm:mb-3">
+            <h3 className="font-display text-lg sm:text-2xl font-bold text-gray-800 line-clamp-2 group-hover:text-gray-900 transition-colors duration-300">{title}</h3>
           </div>
           
           {/* Location with modern styling */}
-          <div className="flex items-center text-gray-600 mb-5 group-hover:text-gray-700 transition-colors duration-300">
-            <div className="p-1.5 bg-gradient-to-r from-gold-400 to-gold-600 rounded-lg mr-2">
-              <MapPin size={15} className="text-white" />
+          <div className="flex items-center text-gray-600 mb-3 sm:mb-5 group-hover:text-gray-700 transition-colors duration-300">
+            <div className="p-1 bg-gradient-to-r from-gold-400 to-gold-600 rounded-md sm:rounded-lg mr-2">
+              <MapPin size={13} className="text-white" />
             </div>
-            <span className="text-base font-medium">{location}</span>
+            <span className="text-xs sm:text-base font-medium">{location}</span>
           </div>
           
           {/* Property Details with modern styling */}
-          <div className="flex items-center justify-between border-t border-gray-100 pt-5 mb-6">
-            <div className="flex space-x-5">
+          <div className="flex items-center justify-between border-t border-gray-100 pt-3 sm:pt-5 mb-4 sm:mb-6">
+            <div className="flex space-x-3 sm:space-x-5">
               <div className="flex items-center text-gray-700 group-hover:text-gray-800 transition-colors duration-300">
-                <Home size={16} className="text-royal-500 mr-2" />
-                <span className="text-sm font-medium">{bedrooms} BHK</span>
+                <Home size={14} className="text-royal-500 mr-1 sm:mr-2" />
+                <span className="text-xs sm:text-sm font-medium">{bedrooms} BHK</span>
               </div>
               <div className="flex items-center text-gray-700 group-hover:text-gray-800 transition-colors duration-300">
-                <ShowerHead size={16} className="text-green-500 mr-2" />
-                <span className="text-sm font-medium">{bathrooms} Baths</span>
+                <ShowerHead size={14} className="text-green-500 mr-1 sm:mr-2" />
+                <span className="text-xs sm:text-sm font-medium">{bathrooms} Baths</span>
               </div>
               <div className="flex items-center text-gray-700 group-hover:text-gray-800 transition-colors duration-300">
-                <Maximize size={16} className="text-purple-500 mr-2" />
-                <span className="text-sm font-medium">{area}</span>
+                <Maximize size={14} className="text-purple-500 mr-1 sm:mr-2" />
+                <span className="text-xs sm:text-sm font-medium">{area}</span>
               </div>
             </div>
           </div>
           
           {/* Price with modern styling */}
-          <div className="flex items-center justify-between mb-7">
+          <div className="flex items-center justify-between mb-4 sm:mb-7">
             <div className="flex items-center">
-              <div className="p-2 bg-gradient-to-r from-gold-400 to-gold-600 rounded-xl mr-2">
-                <BadgeIndianRupee size={18} className="text-white" />
+              <div className="p-1.5 sm:p-2 bg-gradient-to-r from-gold-400 to-gold-600 rounded-lg mr-2">
+                <BadgeIndianRupee size={15} className="text-white sm:w-[18px] sm:h-[18px] w-[15px] h-[15px]" />
               </div>
-              <span className="font-display text-3xl font-extrabold bg-gradient-to-r from-gold-600 to-royal-700 bg-clip-text text-transparent">{price}</span>
+              <span className="font-display text-xl sm:text-3xl font-extrabold bg-gradient-to-r from-gold-600 to-royal-700 bg-clip-text text-transparent">{price}</span>
             </div>
             
             {/* Rating/Quality indicator - slightly refined */}
-            <div className="flex items-center space-x-1">
-              <Star size={15} className="text-gold-400 fill-gold-400" />
-              <Star size={15} className="text-gold-400 fill-gold-400" />
-              <Star size={15} className="text-gold-400 fill-gold-400" />
-              <Star size={15} className="text-gold-400 fill-gold-400" />
-              <Star size={15} className="text-gold-300 fill-gold-300" />
+            <div className="flex items-center space-x-0.5 sm:space-x-1">
+              <Star size={13} className="text-gold-400 fill-gold-400 sm:w-[15px] sm:h-[15px] w-[13px] h-[13px]" />
+              <Star size={13} className="text-gold-400 fill-gold-400 sm:w-[15px] sm:h-[15px] w-[13px] h-[13px]" />
+              <Star size={13} className="text-gold-400 fill-gold-400 sm:w-[15px] sm:h-[15px] w-[13px] h-[13px]" />
+              <Star size={13} className="text-gold-400 fill-gold-400 sm:w-[15px] sm:h-[15px] w-[13px] h-[13px]" />
+              <Star size={13} className="text-gold-300 fill-gold-300 sm:w-[15px] sm:h-[15px] w-[13px] h-[13px]" />
             </div>
           </div>
           
           {/* Modern CTA Button */}
           <button
-            className="w-full bg-gradient-to-r from-royal-600 to-royal-800 hover:from-royal-700 hover:to-royal-900 text-white font-bold py-4 px-6 rounded-xl transition-all duration-300 hover:shadow-xl hover:shadow-royal-500/25 hover:scale-105 group-hover:shadow-2xl group-hover:shadow-royal-500/30 flex items-center justify-center space-x-2 text-lg"
+            className="w-full bg-gradient-to-r from-royal-600 to-royal-800 hover:from-royal-700 hover:to-royal-900 text-white font-bold py-3 sm:py-4 px-4 sm:px-6 rounded-lg sm:rounded-xl transition-all duration-300 hover:shadow-xl hover:shadow-royal-500/25 hover:scale-105 group-hover:shadow-2xl group-hover:shadow-royal-500/30 flex items-center justify-center space-x-2 text-base sm:text-lg"
             onClick={() => window.open(`/properties/${id}`, '_blank')}
           >
             <Sparkles size={18} className="animate-pulse" />

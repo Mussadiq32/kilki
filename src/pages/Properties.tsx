@@ -31,6 +31,7 @@ const Properties = () => {
   const [filteredProperties, setFilteredProperties] = useState<Property[]>([]);
   const [loading, setLoading] = useState(true);
   const { toast } = useToast();
+  const [error, setError] = useState<string | null>(null);
 
   // Get search parameters from URL
   const query = searchParams.get('query') || '';
@@ -49,6 +50,7 @@ const Properties = () => {
   const fetchProperties = async () => {
     try {
       setLoading(true);
+      setError(null);
       const { data, error } = await supabase
         .from('properties')
         .select('*')
@@ -56,22 +58,32 @@ const Properties = () => {
 
       if (error) {
         console.error('Error fetching properties:', error);
+        setError('Failed to load properties');
         toast({
           title: "Error",
           description: "Failed to load properties",
           variant: "destructive",
         });
+        setProperties([]);
         return;
       }
 
-      setProperties(data || []);
+      if (!Array.isArray(data)) {
+        setError('Invalid data received from server');
+        setProperties([]);
+        return;
+      }
+
+      setProperties(data);
     } catch (error) {
       console.error('Error:', error);
+      setError('Failed to load properties');
       toast({
         title: "Error",
         description: "Failed to load properties",
         variant: "destructive",
       });
+      setProperties([]);
     } finally {
       setLoading(false);
     }
@@ -289,7 +301,18 @@ const Properties = () => {
         
         <section className="py-12">
           <div className="container mx-auto px-6 md:px-12 lg:px-24">
-            {loading ? (
+            {error ? (
+              <div className="text-center py-20">
+                <div className="mb-4">
+                  <X size={50} className="mx-auto text-red-400" />
+                </div>
+                <h3 className="text-2xl font-display font-medium text-royal-700 mb-2">Error</h3>
+                <p className="text-royal-500 max-w-md mx-auto mb-6">{error}</p>
+                <CustomButton onClick={fetchProperties} variant="primary">
+                  Retry
+                </CustomButton>
+              </div>
+            ) : loading ? (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 {[1, 2, 3, 4, 5, 6].map((index) => (
                   <div key={index} className="space-y-3">
@@ -305,7 +328,7 @@ const Properties = () => {
                   </div>
                 ))}
               </div>
-            ) : filteredProperties.length === 0 ? (
+            ) : !Array.isArray(filteredProperties) || filteredProperties.length === 0 ? (
               <div className="text-center py-20">
                 <div className="mb-4">
                   <Search size={50} className="mx-auto text-royal-300" />
