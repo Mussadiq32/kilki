@@ -10,6 +10,7 @@ import { Pagination, Navigation, Autoplay } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
+import ModernPropertyCard from '../ui/ModernPropertyCard';
 
 interface Property {
   id: string;
@@ -213,28 +214,13 @@ const FeaturedProperties = () => {
             className="mySwiper !pb-10" // Added padding-bottom to prevent pagination from overlapping cards
           >
             {filteredProperties.map((property, index) => (
-              <SwiperSlide key={property.id} className="pb-4"> {/* Added padding-bottom to individual slides */}
-              <div 
-                  className="animate-fade-up group h-full"
-                style={{ animationDelay: `${(index + 1) * 150}ms` }}
-              >
+              <SwiperSlide key={property.id} className="pb-4">
+                <div className="animate-fade-up group h-full" style={{ animationDelay: `${(index + 1) * 150}ms` }}>
                   <div className="relative h-full flex flex-col">
-                  <PropertyCard 
-                    id={property.id}
-                    title={property.title}
-                    location={property.location}
-                    price={property.price}
-                    bedrooms={property.bedrooms}
-                    bathrooms={property.bathrooms}
-                    area={property.area}
-                    image={property.image}
-                    featured={property.featured}
-                    type={property.type}
-                  />
-                  {/* Hover overlay effect */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-gold-500/10 to-transparent rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
+                    <ModernPropertyCard {...property} />
+                    <div className="absolute inset-0 bg-gradient-to-t from-gold-500/10 to-transparent rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
+                  </div>
                 </div>
-              </div>
               </SwiperSlide>
             ))}
           </Swiper>

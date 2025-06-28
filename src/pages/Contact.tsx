@@ -43,8 +43,8 @@ const Contact = () => {
                 <Mail className="mx-auto mb-4 text-gold-500" size={40} />
                 <h3 className="text-xl font-semibold text-royal-800 mb-3">Email Us</h3>
                 <p className="text-gray-600 mb-4">Send us your queries anytime</p>
-                <a href="mailto:info@royalrealestate.com" className="text-gold-500 font-medium hover:underline">
-                  info@royalrealestate.com
+                <a href="mailto:info@royalgroupofrealestate.com" className="text-gold-500 font-medium hover:underline">
+                  info@royalgroupofrealestates.com
                 </a>
               </div>
               

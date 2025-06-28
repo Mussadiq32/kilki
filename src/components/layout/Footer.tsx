@@ -417,7 +417,7 @@ const Footer = () => {
                 Developed with <FaHeart size={10} className="inline text-red-400 mx-1" /> by
               </p>
               <p className="text-royal-100/70 text-xs">
-                Mussadiq Wani Inc. (Contact: +91 9906106156)
+                Mussadiq Wani Inc.
               </p>
             </div>
           </motion.div>

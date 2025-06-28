@@ -303,4 +303,46 @@
   .theme-gradient-reverse {
     @apply bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 dark:from-blue-50 dark:via-white dark:to-indigo-50;
   }
+
+  .mySwiper .swiper-button-next,
+  .mySwiper .swiper-button-prev {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.85);
+    box-shadow: 0 4px 16px 0 rgba(218, 165, 32, 0.10), 0 1.5px 6px 0 rgba(0,0,0,0.08);
+    color: #bfa14a;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.3s, color 0.3s, box-shadow 0.3s, transform 0.2s;
+    top: 50%;
+    transform: translateY(-50%);
+    opacity: 0.95;
+    border: 2px solid #f3e7c9;
+  }
+
+  .mySwiper .swiper-button-next:hover,
+  .mySwiper .swiper-button-prev:hover {
+    background: linear-gradient(135deg, #bfa14a 0%, #f3e7c9 100%);
+    color: #fff;
+    box-shadow: 0 8px 24px 0 rgba(218, 165, 32, 0.18), 0 2px 8px 0 rgba(0,0,0,0.12);
+    transform: translateY(-50%) scale(1.08);
+    border-color: #bfa14a;
+  }
+
+  .mySwiper .swiper-button-next:after,
+  .mySwiper .swiper-button-prev:after {
+    font-size: 1.5rem;
+    font-weight: bold;
+  }
+
+  @media (max-width: 640px) {
+    .mySwiper .swiper-button-next,
+    .mySwiper .swiper-button-prev {
+      width: 38px;
+      height: 38px;
+      font-size: 1.1rem;
+    }
+  }
 }
