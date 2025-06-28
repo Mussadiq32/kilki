@@ -325,7 +325,7 @@ const ServiceCard = ({ service, index }: { service: typeof servicesData[0]; inde
       
       {/* Card */}
       <motion.div
-        className="relative h-full bg-royal-900/80 backdrop-blur-xl border border-gold-400 rounded-3xl p-8 overflow-hidden"
+        className="relative h-full bg-royal-900/80 backdrop-blur-xl border border-gold-400 rounded-3xl p-4 sm:p-6 md:p-8 overflow-hidden"
         whileHover={{ 
           y: -8,
           rotateX: 5,
@@ -343,42 +343,42 @@ const ServiceCard = ({ service, index }: { service: typeof servicesData[0]; inde
         {/* Background pattern */}
         <div className="absolute inset-0 opacity-5">
           <div className="absolute inset-0 bg-gradient-to-br from-gold-100/40 to-royal-100/40" />
-          <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-radial from-gold-200/30 to-transparent rounded-full -translate-y-16 translate-x-16" />
+          <div className="absolute top-0 right-0 w-20 h-20 md:w-32 md:h-32 bg-gradient-radial from-gold-200/30 to-transparent rounded-full -translate-y-8 md:-translate-y-16 translate-x-8 md:translate-x-16" />
         </div>
 
         {/* Icon */}
         <motion.div
-          className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${service.gradient} border border-gold-400 flex items-center justify-center mb-6 relative z-10`}
+          className={`w-10 h-10 md:w-16 md:h-16 rounded-2xl bg-gradient-to-br ${service.gradient} border border-gold-400 flex items-center justify-center mb-4 md:mb-6 relative z-10`}
           whileHover={{ 
             scale: 1.1,
             rotateY: 180,
           }}
           transition={{ duration: 0.6 }}
         >
-          <service.icon className="w-8 h-8 text-gold-500" />
+          <service.icon className="w-6 h-6 md:w-8 md:h-8 text-gold-500" />
         </motion.div>
 
         {/* Content */}
         <div className="relative z-10">
-          <h3 className="text-2xl font-bold text-gold-400 mb-4 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-gold-400 group-hover:to-gold-600 transition-all duration-300">
+          <h3 className="text-lg md:text-2xl font-bold text-gold-400 mb-2 md:mb-4 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-gold-400 group-hover:to-gold-600 transition-all duration-300">
             {service.title}
           </h3>
           
-          <p className="text-gold-100/80 text-lg mb-6 leading-relaxed">
+          <p className="text-gold-100/80 text-base md:text-lg mb-4 md:mb-6 leading-relaxed">
             {service.description}
           </p>
 
           {/* Features */}
-          <ul className="space-y-3 mb-8">
+          <ul className="space-y-2 md:space-y-3 mb-6 md:mb-8">
             {service.features.map((feature, idx) => (
               <motion.li
                 key={idx}
                 initial={{ opacity: 0, x: -20 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.1 * idx }}
-                className="flex items-center gap-3 text-gold-100/90"
+                className="flex items-center gap-2 md:gap-3 text-gold-100/90 text-sm md:text-base"
               >
-                <CheckCircle className="w-5 h-5 text-gold-400 flex-shrink-0" />
+                <CheckCircle className="w-4 h-4 md:w-5 md:h-5 text-gold-400 flex-shrink-0" />
                 <span>{feature}</span>
               </motion.li>
             ))}
@@ -387,7 +387,7 @@ const ServiceCard = ({ service, index }: { service: typeof servicesData[0]; inde
 
         {/* Floating micro-interactions */}
         <motion.div
-          className="absolute top-4 right-4 w-2 h-2 bg-gold-400/30 rounded-full"
+          className="absolute top-2 right-2 md:top-4 md:right-4 w-2 h-2 bg-gold-400/30 rounded-full"
           animate={{
             scale: [1, 1.5, 1],
             opacity: [0.3, 0.8, 0.3],
@@ -575,7 +575,7 @@ export function PremiumServicesSection() {
         >
           {trustIndicators.map((indicator, index) => (
             <motion.div
-              key={index}
+              key={index} 
               className="text-center p-6 bg-gold-100/10 backdrop-blur-xl rounded-2xl border border-gold-200/25 group hover:bg-gold-100/20 transition-all"
               whileHover={{ scale: 1.05, y: -5 }}
               initial={{ opacity: 0, y: 30 }}
@@ -592,7 +592,7 @@ export function PremiumServicesSection() {
               <div className="text-3xl font-bold text-gold-600 mb-2">
                 <Counter end={parseInt(indicator.value.replace(/\D/g, ''))} />
                 {indicator.value.replace(/\d/g, '')}
-              </div>
+            </div>
               <div className="text-gold-700 text-sm">{indicator.label}</div>
             </motion.div>
           ))}
@@ -604,7 +604,7 @@ export function PremiumServicesSection() {
             <ServiceCard key={index} service={service} index={index} />
           ))}
         </div>
-
+        
         {/* Floating CTA */}
         <motion.div
           className="text-center"
